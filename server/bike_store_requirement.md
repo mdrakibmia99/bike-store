@@ -1,39 +1,75 @@
-### **Live Project Link:**
- [Backend Live link](https://bike-store-gamma.vercel.app/)
-
 ### **Objective:**
 
 Develop an Express application with TypeScript, integrating MongoDB with Mongoose to manage a Bike Store. Ensure data integrity using Mongoose schema validation.
 
 ---
 
-### **Locally Project Setup:**
+### **Project Setup:**
 
+- Create an Express project with TypeScript.
+- Set up a MongoDB database to store **Products** (bikes) and **Orders**.
+- Use Mongoose for schema definition and data operations.
+- Implement CRUD operations for both bikes and orders.
+
+---
+
+### **Models:**
+
+1. **Product Model (Bike)**
+   - **name** (string): The name of the bike.
+   - **brand** (string): The manufacturer or brand of the bike.
+   - **price** (number): Price of the bike.
+   - **category** (string): Type of bike (e.g., Mountain, Road, Hybrid, Electric). Use `enum` with exact values (`Mountain`, `Road`, `Hybrid`, `Electric`).
+   - **description** (string): A brief description of the bike.
+   - **quantity** (number): Quantity of the bike available.
+   - **inStock** (boolean): Indicates if the bike is in stock.
+2. **Order Model**
+   - **email** (string): The email address of the customer.
+   - **product** (ObjectId): The bike ordered (`unused ref`). (Enter the created productId from your database that represents the bike you want to purchase.)
+   - **quantity** (number): The quantity of the ordered bike.
+   - **totalPrice** (number): The total price (product price \* quantity).
+
+---
+
+### **Generic Error Response:**
+
+1. **`message`**: A brief error message explaining what went wrong.
+2. **`success`**: Set to `false` for error responses.
+3. **`error`**: The error message or error object returned by the application (e.g., `"ValidationError"`, `"Resource not found"`).
+4. **`stack`**: The stack trace showing where the error occurred in the code.
+
+### Example:
+
+```json
+{
+  "message": "Validation failed",
+  "success": false,
+  "error": {
+    "name": "ValidationError",
+    "errors": {
+      "price": {
+        "message": "Price must be a positive number",
+        "name": "ValidatorError",
+        "properties": {
+          "message": "Price must be a positive number",
+          "type": "min",
+          "min": 0
+        },
+        "kind": "min",
+        "path": "price",
+        "value": -5
+      }
+    }
+  },
+  "stack": "Error: Something went wrong\n    at app.js:23:13\n    at..."
+}
 ```
-git clone https://github.com/mdrakibmia99/bike-store-backend.git
-cd bike-store-backend
-npm install
-```
+
 ---
 
 
 
-#### Next:
-
-create .env file in root dir (bike-store-backend is root dir) and set database uri
-
-```
-DATABASE_URL=YOUR_MONGODB_URI
-PORT=5000
-```
 ---
-#### Run Project:
-```
-npm run start:dev 
-```
-
-## **Check API**
-
 
 ### **1. Create a Bike**
 
@@ -245,6 +281,3 @@ npm run start:dev
 ```
 
 ---
-
-If you need to know more details:
-[More](https://github.com/mdrakibmia99/bike-store-backend/blob/main/bike_store_requirement.md)

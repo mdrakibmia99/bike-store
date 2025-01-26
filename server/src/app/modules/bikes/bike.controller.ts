@@ -1,29 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import { bikeService } from './bike.service';
-import bikeValidationSchema, {
-  updateBikeDataValidation,
-} from './bike.validation';
+import { StatusCodes } from 'http-status-codes';
+import catchAsync from '../../utils/catchAsync';
+import { updateBikeDataValidation } from './bike.validation';
 
-const createBike = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // get data from body
-    const payload = req.body;
-
-    const validatePayload = bikeValidationSchema.parse(payload);
-    // create a bike use service function
-    const result = await bikeService.createBike(validatePayload);
-    // send response
-    res.status(201).json({
-      success: true,
-      message: 'Bike  created successfully',
-      data: result,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    next(error);
-  }
-};
+const createBike = catchAsync(async (req, res) => {
+  await bikeService.createBike(req.body);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'Bike create successfully',
+    statusCode: StatusCodes.OK,
+  });
+});
 
 // create a controller for get all bikes
 const getBikes = async (req: Request, res: Response, next: NextFunction) => {
@@ -55,7 +43,7 @@ const getSpecificBike = async (
     const productId = req.params.productId;
     const result = await bikeService.getSpecificBike(productId);
     // send response
-    if(result){
+    if (result) {
       res.status(201).json({
         success: true,
         message: 'Bike retrieved successfully',
@@ -66,7 +54,6 @@ const getSpecificBike = async (
       success: false,
       message: 'Can not find any bike data',
     });
-   
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -121,4 +108,3 @@ export const bikeController = {
   updateBike,
   deleteBike,
 };
-

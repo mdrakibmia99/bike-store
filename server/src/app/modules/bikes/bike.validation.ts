@@ -17,15 +17,15 @@ export const updateBikeDataValidation = z.object({
 });
 
 const bikeValidationSchema = z.object({
+body: z.object({
   name: z.string(),
   brand: z.string(),
   price: z.number().min(0),
   category: z.enum(['Mountain', 'Road', 'Hybrid', 'Electric']),
   description: z.string(),
   quantity: z.number().int().min(0),
-  inStock: z.boolean(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  inStock: z.boolean()
+})
 });
 
 export default bikeValidationSchema;

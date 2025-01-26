@@ -11,6 +11,8 @@ import { createToken } from './auth.utills';
 import { JwtPayload } from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
+import { createHashPassword } from '../../utils/createHashPassword';
+import { comparePassword } from '../../utils/comparePassword';
 
 type UserPayload = {
   _id: Types.ObjectId;
@@ -71,32 +73,32 @@ const login = async (payload: { email: string; password: string }) => {
   return { accessToken, refreshToken, user };
 };
 
-const refreshToken = async (token: string,res:Response) => {
+const refreshToken = async (token: string, res: Response) => {
   let decoded;
   try {
-    decoded= jwt.verify(
+    decoded = jwt.verify(
       token,
       config.jwt_refresh_secret as string,
     ) as JwtPayload;
-    console.log(decoded,"decoded")
+    console.log(decoded, 'decoded');
   } catch (error) {
     res.clearCookie('refreshToken');
     throw new AppError(StatusCodes.UNAUTHORIZED, 'Expired refresh token');
   }
-  
+
   const { userId } = decoded;
   const user = await User.findById(userId).select('+password');
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
   }
 
-   // // checking if the user is inactive
-   const userStatus = user?.isBlocked;
+  // // checking if the user is inactive
+  const userStatus = user?.isBlocked;
 
-   if (userStatus) {
-     throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked ! !');
-   }
-   //create token and sent to the  client side
+  if (userStatus) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked ! !');
+  }
+  //create token and sent to the  client side
   const jwtPayload = {
     email: user?.email,
     role: user?.role,
@@ -109,11 +111,41 @@ const refreshToken = async (token: string,res:Response) => {
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
   );
-  return accessToken
+  return accessToken;
+};
+const updatePassword = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
+  const { userId, email, role } = userData;
+  const user = await User.findById(userId).select('+password');
+  if (!user) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+  const isPasswordMatched = await comparePassword(
+    payload?.oldPassword,
+    user?.password,
+  );
+ 
+  if (!isPasswordMatched) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      'Please enter current password correctly',
+    );
+  }
+  const newPassword = await createHashPassword(
+    payload?.newPassword,
+    config.bcrypt_salt_round as string,
+  );
+
+  await User.findByIdAndUpdate(userId, {
+    password: newPassword,
+  });
 };
 
 export const authService = {
   register,
   login,
   refreshToken,
+  updatePassword,
 };

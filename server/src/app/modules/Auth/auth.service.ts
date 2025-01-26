@@ -78,6 +78,7 @@ const refreshToken = async (token: string,res:Response) => {
       token,
       config.jwt_refresh_secret as string,
     ) as JwtPayload;
+    console.log(decoded,"decoded")
   } catch (error) {
     res.clearCookie('refreshToken');
     throw new AppError(StatusCodes.UNAUTHORIZED, 'Expired refresh token');

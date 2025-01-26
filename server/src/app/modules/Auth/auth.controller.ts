@@ -4,6 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { authService } from './auth.service';
 import { Request, Response } from 'express';
 import config from '../../config';
+import { JwtPayload } from 'jsonwebtoken';
 
 const login = catchAsync(async (req: Request, res: Response) => {
   // console.log(req.body,"test login data req.body")
@@ -37,7 +38,7 @@ const register = catchAsync(async (req, res) => {
 
 const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
-  const result = await authService.refreshToken(refreshToken,res);
+  const result = await authService.refreshToken(refreshToken, res);
   // console.log(result,"controler result");
   sendResponse(res, {
     success: true,
@@ -48,19 +49,34 @@ const refreshToken = catchAsync(async (req, res) => {
     },
   });
 });
-const logOut=(req:Request,res:Response)=>{
-   res.clearCookie('refreshToken');
-   sendResponse(res, {
+const updatePassword = catchAsync(async (req, res) => {
+   const user=req.user;
+   const payload=req.body
+  const result = await authService.updatePassword(user as JwtPayload, payload);
+  // console.log(result,"controler result");
+  sendResponse(res, {
+    success: true,
+    message: 'Update Password Successful',
+    statusCode: StatusCodes.OK,
+    data: {
+      token: result,
+    },
+  });
+});
+const logOut = (req: Request, res: Response) => {
+  res.clearCookie('refreshToken');
+  sendResponse(res, {
     success: true,
     message: 'Logout',
     statusCode: StatusCodes.OK,
     data: [],
   });
-}
+};
 
 export const authController = {
   register,
   login,
   refreshToken,
-  logOut
+  updatePassword,
+  logOut,
 };

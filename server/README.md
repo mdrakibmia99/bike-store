@@ -247,4 +247,4 @@ npm run start:dev
 ---
 
 If you need to know more details:
-[More](https://github.com/mdrakibmia99/bike-store-backend/blob/main/bike_store_requirement.md)
+[More](https://github.com/mdrakibmia99/bike-store/blob/main/server/bike_store_requirement.md)

@@ -22,11 +22,16 @@ export default {
   			},
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
+				  black: '#000000', // Sophisticated and bold
+				  gray: '#A8A9AD', // Metallic Silver/Gray
+				  red: '#D72638', // Crimson Red
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				foreground: 'hsl(var(--secondary-foreground))',
+				  yellow: '#FFC300', // Golden Yellow
+				  blue: '#003366', // Dark Blue
   			},
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
@@ -38,7 +43,9 @@ export default {
   			},
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
+  				foreground: 'hsl(var(--destructive-foreground))',
+				  green: '#39FF14', // Neon Green
+				  white: '#F4F4F4', // Matte White
   			},
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

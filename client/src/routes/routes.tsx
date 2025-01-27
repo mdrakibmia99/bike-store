@@ -3,7 +3,8 @@ import App from "../App";
 import Home from "../pages/Home";
 import NotFoundPage from "../pages/NotFoundPage";
 import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
+import SignUpPage from "../pages/SignUpPage";
+import Royal from "@/pages/Royal";
 
 export const router = createBrowserRouter([
   {
@@ -14,15 +15,20 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path:'/login',
+        element: <Login/>
+      },
+      {
+        path:'/signup',
+        element: <SignUpPage/>
+      },
     ],
   },
+  
   {
-    path:'/login',
-    element: <Login/>
-  },
-  {
-    path:'/signup',
-    element: <SignUp/>
+    path:'/done',
+    element: <Royal/>
   },
   {
   path: "*",

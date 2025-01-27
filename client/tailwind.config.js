@@ -23,7 +23,7 @@ export default {
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
   				foreground: 'hsl(var(--primary-foreground))',
-				  black: '#000000', // Sophisticated and bold
+				  black: '#0a0a0a', // Sophisticated and bold
 				  gray: '#A8A9AD', // Metallic Silver/Gray
 				  red: '#D72638', // Crimson Red
   			},

@@ -9,17 +9,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import navbarImg from "@/assets/images/bike-logo/bike-img-logo.png";
-import { Link } from "react-router-dom";
-const menuList=[
-  {id:1, name:"HOME"},
-  {id:2, name:"ABOUT"},
-  {id:3, name:"CONTACT"},
-  {id:4, name:"SERVICES"}
-]
+import { Link, useLocation } from "react-router-dom";
+const menuList = [
+  { id: 1, name: "HOME", link: "/" },
+  { id: 2, name: "All Products", link: "/bikes" },
+  { id: 3, name: "SERVICES", link: "/service" },
+  { id: 4, name: "ABOUT", link: "/about" },
+  { id: 5, name: "CONTACT", link: "/contact" },
+];
 
 const Navbar = () => {
+  const location = useLocation();
+  console.log(location);
   return (
-    <section className="py-4 bg-black">
+    <section className="py-4 bg-black sticky top-0 z-50">
       <div className="container mx-auto">
         <nav className="hidden justify-between lg:flex lg:items-center">
           <div className="flex items-center gap-6">
@@ -28,34 +31,35 @@ const Navbar = () => {
             </div>
             <div className="flex items-center text-white  font-bold">
               <ul className="flex gap-6">
-                {
-                  menuList.map((item)=>(
-                    <li className="relative group" key={item.id}>
-                  <span className="cursor-pointer hover:text-primary-red transition-all duration-300">{item.name}</span>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary-red transition-all duration-300 group-hover:w-full"></span>
-                </li>))
-                }
-                {/* <li className="relative group">
-                  <span className="cursor-pointer">HOME</span>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
-                </li>
-                <li className="relative group">
-                  <span className="cursor-pointer">ABOUT</span>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
-                </li>
-                <li className="relative group">
-                  <span className="cursor-pointer">CONTACT</span>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
-                </li> */}
+                {menuList.map((item) => (
+                  <li className="relative group" key={item.id}>
+                    <Link to={item.link}>
+                      <span
+                        className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
+                          item.link === location.pathname
+                            ? "text-primary-red"
+                            : ""
+                        }`}
+                      >
+                        {item.name}
+                      </span>
+                    </Link>
+                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary-red transition-all duration-300 group-hover:w-full"></span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
           <div className="flex gap-2">
-          <Link to="/login">
-            <Button variant="outline" size="lg">
-              Log in
-            </Button>
-              </Link>
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="text-primary-red font-semibold text-lg hover:shadow-md"
+                size="lg"
+              >
+                Log in
+              </Button>
+            </Link>
           </div>
         </nav>
         <div className="block lg:hidden">
@@ -88,7 +92,12 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <Button variant="outline">Log in</Button>
+                  <Button
+                    variant="outline"
+                    className="text-primary-red font-semibold"
+                  >
+                    Log in
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>

@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -54,14 +53,11 @@ export default function SignUpPage() {
   }
 
   return (
-    <div>
-      <div className="flex min-h-[60vh] h-full w-full items-center justify-center px-4">
-        <Card className="mx-auto max-w-sm">
+
+      <div className="h-[60vh] grid place-content-center ">
+        <Card className="mx-auto w-full md:w-96 lg:w-96">
           <CardHeader>
-            <CardTitle className="text-2xl">Register</CardTitle>
-            <CardDescription>
-              Create a new account by filling out the form below.
-            </CardDescription>
+            <CardTitle className="text-2xl text-center">Register</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -105,13 +101,13 @@ export default function SignUpPage() {
             </Form>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link to="#" className="underline">
+              <Link to="/login" className="underline">
                 Login
               </Link>
             </div>
           </CardContent>
         </Card>
       </div>
-    </div>
+    
   );
 }

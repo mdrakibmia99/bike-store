@@ -5,21 +5,15 @@ import { toast } from "sonner";
 
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PasswordInput } from "@/components/ui/password-input";
+
 import { Link } from "react-router-dom";
 import CustomInputField from "@/components/custom-input/CustomInputField";
 
@@ -57,18 +51,15 @@ export default function LoginPreview() {
   }
 
   return (
-    <div className="flex flex-col min-h-[50vh] h-full w-full items-center justify-center px-4">
-      <Card className="mx-auto max-w-sm">
+    <div className="h-[60vh] grid place-content-center">
+      <Card className="mx-auto w-full md:w-96 lg:w-96">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email and password to login to your account.
-          </CardDescription>
+          <CardTitle className="text-2xl text-center">Login</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="grid gap-4">
+              <div className="grid gap-4 ">
                 <CustomInputField
                   name="email"
                   label="Email"
@@ -85,7 +76,9 @@ export default function LoginPreview() {
                   control={form.control}
                 />
 
-
+                <Link to="#" className="ml-auto inline-block text-sm underline">
+                  Forgot your password?
+                </Link>
                 <Button type="submit" className="w-full">
                   Login
                 </Button>
@@ -97,7 +90,7 @@ export default function LoginPreview() {
           </Form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link to="#" className="underline">
+            <Link to="/signup" className="underline">
               Sign up
             </Link>
           </div>

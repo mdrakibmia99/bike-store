@@ -1,6 +1,7 @@
 import { useState } from "react";
 import bikeImge from '@/assets/images/home/bike-1.jpg'
 import { FieldValues } from "react-hook-form";
+import { Link } from "react-router-dom";
 const products = [
   {
     id: 1,
@@ -99,9 +100,9 @@ export default function ALlProducts() {
   });
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4">
+    <div className="bg-gray-100 min-h-screen ">
       <div className="container mx-auto">
-        <h1 className="text-2xl font-bold mb-4">All Products</h1>
+        <h1 className="text-4xl font-bold py-4 text-primary-red text-center">All Products</h1>
 
         {/* Search and Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -154,7 +155,7 @@ export default function ALlProducts() {
           {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white shadow-md rounded-md p-4 hover:shadow-lg transition-all"
+              className="bg-white shadow-md rounded-md  p-4 hover:shadow-lg transition-all"
             >
               <img
                 src={product.image}
@@ -162,13 +163,13 @@ export default function ALlProducts() {
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
               <h2 className="text-lg font-bold mb-2">{product.name}</h2>
-              <p className="text-sm text-gray-600 mb-1">Brand: {product.brand}</p>
-              <p className="text-sm text-gray-600 mb-1">Model: {product.model}</p>
-              <p className="text-sm text-gray-600 mb-1">Category: {product.category}</p>
-              <p className="text-sm text-gray-600 mb-3">Price: ${product.price}</p>
-              <button className="bg-primary-red text-white py-1 px-3 rounded-md hover:bg-primary-red transition">
+              <p className="text-lg font-medium text-gray-600 mb-3 ">Model: <span className="">{product.model}</span> </p>
+              <p className="text-lg font-medium text-gray-600 mb-3">Price: <span className="font-bold pr-1 text-xl text-primary-black">{product.price}</span>tk </p>
+              <Link to={'/details/'+product.id}>
+              <button className="bg-primary-red cursor-pointer text-white  px-3 rounded-md hover:bg-red-700 transition w-full py-2">
                 View Details
               </button>
+             </Link>
             </div>
           ))}
         </div>

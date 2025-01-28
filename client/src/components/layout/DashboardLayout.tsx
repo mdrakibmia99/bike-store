@@ -140,7 +140,7 @@ export default function DashboardLayout() {
                         : "hover:bg-gray-700"
                     }`}
                   >
-                    All Products
+                    ALL PRODUCTS
                   </Link>
                 </li>
                 <li>

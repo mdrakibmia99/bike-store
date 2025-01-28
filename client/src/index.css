@@ -67,5 +67,5 @@
 
 
 input {
-  @apply focus:outline-none text-primary-red font-thin
+  @apply focus:outline-none 
 }

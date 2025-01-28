@@ -11,6 +11,9 @@ import Contact from "@/pages/Contact";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import ProductCreate from "@/pages/Dashboard/ProductCreate";
 import FAQPage from "@/pages/FAQPage";
+import CartPage from "@/pages/CartPage";
+import { ProfileDropdown } from "@/components/shared/navbar/ProfileDropdown";
+import ProductDetails from "@/pages/ProductDetails";
 
 
 export const router = createBrowserRouter([
@@ -38,6 +41,14 @@ export const router = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "/details/:id",
+        element: <ProductDetails />,
+      },
       
       {
         path: "/faqs",
@@ -51,6 +62,7 @@ export const router = createBrowserRouter([
         path:'/signup',
         element: <SignUpPage/>
       },
+    
     ],
   },
   {

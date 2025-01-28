@@ -8,6 +8,7 @@ import ALlProducts from "@/pages/ALlProducts";
 import Services from "@/pages/Services";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
         element: <SignUpPage/>
       },
     ],
+  },
+  {
+  path:'/dashboard',
+  element: <DashboardLayout/>,
   },
   
 

@@ -1,5 +1,7 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BiCartAdd } from "react-icons/bi";
+
 
 import {
   Sheet,
@@ -10,9 +12,11 @@ import {
 } from "@/components/ui/sheet";
 import navbarImg from "@/assets/images/bike-logo/bike-img-logo.png";
 import { Link, useLocation } from "react-router-dom";
+import { ProfileDropdown } from "./ProfileDropdown";
+
 const menuList = [
   { id: 1, name: "HOME", link: "/" },
-  { id: 2, name: "All Products", link: "/bikes" },
+  { id: 2, name: "All PRODUCTS", link: "/bikes" },
   { id: 3, name: "SERVICES", link: "/service" },
   { id: 4, name: "ABOUT", link: "/about" },
   { id: 5, name: "CONTACT", link: "/contact" },
@@ -20,11 +24,12 @@ const menuList = [
 
 const Navbar = () => {
   const location = useLocation();
-  console.log(location);
+  const cartItems=22
+  const isUser= true;
   return (
     <section className="py-4 bg-black sticky top-0 z-50">
       <div className="container mx-auto">
-        <nav className="hidden justify-between lg:flex lg:items-center">
+        <nav className="hidden justify-between gap-5 lg:flex lg:items-center">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <img src={navbarImg} className="w-28" alt="logo" />
@@ -50,16 +55,38 @@ const Navbar = () => {
               </ul>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Link to="/login">
+           {/* right side like search add login buton option  */}
+          <div className="flex gap-5 flex-1 items-center ">
+            <input
+              type="text"
+              placeholder="Search by brand, name, or category"
+              className="border border-gray-300 rounded-md flex-1 p-3 h-10 text-black" // Adjusted height and padding
+            />
+            <div className="text-white flex gap-2 space-x-2">
+              <Link to="/cart" className="relative p-2 hover:scale-105 transition-all duration-300">
+                 <BiCartAdd  className="w-8 h-8 " />
+                {cartItems > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+                    {cartItems}
+                  </span>
+                )}
+          
+            </Link>
+            </div>
+            {
+              isUser ?     <ProfileDropdown/>:
+              <Link to="/login">
               <Button
                 variant="outline"
-                className="text-primary-red font-semibold text-lg hover:shadow-md"
+                className="text-primary-red font-semibold text-lg hover:shadow-md h-10" // Ensure button height matches
                 size="lg"
               >
                 Log in
               </Button>
             </Link>
+
+            }
+          
           </div>
         </nav>
         <div className="block lg:hidden">

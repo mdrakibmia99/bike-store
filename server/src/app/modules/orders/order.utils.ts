@@ -1,0 +1,1 @@
+import shurjopay from "shurjopay"

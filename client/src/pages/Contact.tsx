@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -56,8 +55,8 @@ export default function ContactFormPreview() {
   }
 
   return (
-    <div className="h-[60vh] grid place-content-center">
-         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="h-fit grid place-content-center">
+         <div className=" flex items-center justify-center">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Contact Us</h1>

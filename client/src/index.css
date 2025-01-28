@@ -64,3 +64,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+input {
+  @apply focus:outline-none text-primary-red font-thin
+}

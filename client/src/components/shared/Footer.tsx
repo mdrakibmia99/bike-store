@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="bg-primary-black text-white py-8">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto ">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
@@ -30,7 +32,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white">Contact Us</a></li>
               <li><a href="#" className="hover:text-white">Returns</a></li>
               <li><a href="#" className="hover:text-white">Shipping Info</a></li>
-              <li><a href="#" className="hover:text-white">FAQs</a></li>
+              <li><Link to="/faqs" className="hover:text-white">FAQs</Link></li>
             </ul>
           </div>
 

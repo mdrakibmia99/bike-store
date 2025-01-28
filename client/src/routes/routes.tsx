@@ -9,6 +9,8 @@ import Services from "@/pages/Services";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import ProductCreate from "@/pages/Dashboard/ProductCreate";
+import FAQPage from "@/pages/FAQPage";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +38,11 @@ export const router = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+      
+      {
+        path: "/faqs",
+        element: <FAQPage />,
+      },
       {
         path:'/login',
         element: <Login/>
@@ -49,6 +56,11 @@ export const router = createBrowserRouter([
   {
   path:'/dashboard',
   element: <DashboardLayout/>,
+  children:[
+    {
+      path: "/dashboard/orders/all",
+      element: < ProductCreate/>,
+    }]
   },
   
 

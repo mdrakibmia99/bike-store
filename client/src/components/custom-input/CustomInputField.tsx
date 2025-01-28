@@ -14,8 +14,8 @@ interface InputFieldProps<T extends FieldValues> {
 const CustomInputField = <T extends FieldValues>({
   name,
   label,
-  placeholder = "",
-  type = "text",
+  placeholder,
+  type ,
   control,
 }: InputFieldProps<T>) => {
   return (

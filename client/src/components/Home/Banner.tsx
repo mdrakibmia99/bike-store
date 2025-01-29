@@ -11,7 +11,7 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { heroSLider } from "@/data/imageLink";
 
 export default function App() {
-  return (
+  return (<div className="container mx-auto"> 
     <div className="relative w-full ">
       <Swiper
         spaceBetween={30}
@@ -42,6 +42,7 @@ export default function App() {
           />
         </SwiperSlide>
       </Swiper>
+    </div>
     </div>
   );
 }

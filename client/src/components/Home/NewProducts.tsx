@@ -127,7 +127,7 @@ const NewProducts = () => {
  
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
-          {products.slice(0, 8).map((product) => (
+          {products.slice(0, 6).map((product) => (
             <div
               key={product.id}
               className="bg-white shadow-md rounded-md  p-4 hover:shadow-lg transition-all"

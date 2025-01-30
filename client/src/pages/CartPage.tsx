@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import cycle1 from "@/assets/images/bike-image-red.jpg"; // Assuming the image path
 
 const CartPage = () => {
   // Sample cart items
@@ -29,6 +31,11 @@ const CartPage = () => {
     );
   };
 
+  // Delete item
+  const handleDelete = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Calculate total price
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -36,49 +43,56 @@ const CartPage = () => {
   );
 
   return (
-    <section className="container mx-auto min-h-[70vh] grid grid-cols-1 lg:grid-cols-12 gap-12 py-6   ">
+    <section className="container mx-auto min-h-[70vh] grid grid-cols-1 lg:grid-cols-12 gap-12 py-6">
       {/* Left Side: Product List */}
       <div className="lg:col-span-9 rounded-lg shadow-md p-6">
         <h2 className="text-xl font-bold mb-4">MY CART</h2>
         {cartItems.length > 0 ? (
-        
-            cartItems.map((item) => (
+          cartItems.map((item) => (
             <div
               key={item.id}
-              className="grid grid-cols-12 items-center gap-4 border-b border-gray-200 py-4 "
+              className="flex md:flex-row flex-col items-center justify-between gap-4 border-b border-gray-200 py-4"
             >
-              {/* Product Info */}
-              <div className="col-span-6">
+              <img
+                src={cycle1}
+                alt="Product"
+                className="w-32 object-cover border rounded"
+              />
+              <div>
                 <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p className="text-gray-500">Price: ${item.price}</p>
+                <p className="text-sm text-gray-500">Model: Kono MOdel Nai</p>
               </div>
-
-              {/* Quantity Controls */}
-              <div className="col-span-3 flex items-center justify-center gap-2">
-                <Button
+              <div className="flex items-center border rounded-md">
+                <button
+                  className="px-3 py-1 border-r text-gray-600"
                   onClick={() => handleDecrease(item.id)}
-                  variant="outline"
-                  className="h-8 w-8 text-sm"
                 >
                   -
-                </Button>
-                <span className="font-semibold text-lg">{item.quantity}</span>
-                <Button
+                </button>
+                <span className="px-4">{item.quantity}</span>
+                <button
+                  className="px-3 py-1 border-l text-gray-600"
                   onClick={() => handleIncrease(item.id)}
-                  variant="outline"
-                  className="h-8 w-8 text-sm"
                 >
                   +
-                </Button>
+                </button>
               </div>
-
-              {/* Total Price for Item */}
-              <div className="col-span-3 text-right font-semibold">
-                ${item?.price * item.quantity}
+              <div>
+                <span className="font-semibold text-lg">
+                  $ {item.price.toFixed(2)}
+                </span>
+              </div>
+              <div>
+                <Button
+                  onClick={() => handleDelete(item.id)}
+                  variant="link"
+                  className="text-primary-red flex items-center gap-2"
+                >
+                  <RiDeleteBin2Fill className="w-5 h-5 mr-1" /> Remove
+                </Button>
               </div>
             </div>
           ))
-
         ) : (
           <div className="w-full h-full grid place-items-center text-semibold text-center text-xl">
             <p className="text-gray-500">Your cart is empty.</p>

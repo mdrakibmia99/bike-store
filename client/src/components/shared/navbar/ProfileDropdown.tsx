@@ -7,8 +7,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
+import { useLogOutMutation } from "@/redux/features/auth/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/auth/authSlice";
 
 export function ProfileDropdown() {
+  const dispatch = useAppDispatch();
+  const [logOut] = useLogOutMutation();
+  const handleLogOut=async()=>{
+ 
+      dispatch(logout());
+      toast.success("logout!");
+      await logOut({});
+
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -20,9 +33,9 @@ export function ProfileDropdown() {
           <AvatarFallback>Profile</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 mt-8 ">
-        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">Log out</DropdownMenuItem>
+      <DropdownMenuContent className="w-48 mt-8 p-2  ">
+        <DropdownMenuItem className="cursor-pointer border-b hover:text-primary-red">Profile</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer hover:text-primary-red" onClick={handleLogOut}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

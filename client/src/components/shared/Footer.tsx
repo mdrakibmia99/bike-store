@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { FaFacebookF ,FaWhatsapp,FaLinkedinIn  } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer className="bg-primary-black text-white py-8 px-4 lg:px-0">
@@ -12,6 +12,11 @@ export default function Footer() {
               We are passionate about providing top-quality bikes and accessories to
               our customers. Visit us for the best riding experience.
             </p>
+            <div className="mt-4 flex space-x-4 text-gray-400">
+              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaFacebookF className="w-7 h-7" /></a>
+              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaWhatsapp className="w-7 h-7" /></a>
+              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaLinkedinIn className="w-7 h-7" /></a>
+            </div>
           </div>
 
           {/* Shop Section */}

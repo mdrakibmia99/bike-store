@@ -2,7 +2,6 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BiCartAdd } from "react-icons/bi";
 
-
 import {
   Sheet,
   SheetContent,
@@ -13,6 +12,9 @@ import {
 import navbarImg from "@/assets/images/bike-logo/bike-img-logo.png";
 import { Link, useLocation } from "react-router-dom";
 import { ProfileDropdown } from "./ProfileDropdown";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { verifyToken } from "@/utils/verifyToken";
 
 const menuList = [
   { id: 1, name: "HOME", link: "/" },
@@ -23,9 +25,14 @@ const menuList = [
 ];
 
 const Navbar = () => {
+  const token = useAppSelector(selectCurrentToken);
   const location = useLocation();
-  const cartItems=22
-  const isUser= true;
+  const cartItems = 22;
+  let isUser;
+  if (token) {
+    isUser = verifyToken(token);
+  }
+
   return (
     <section className="py-4 bg-black sticky top-0 z-50">
       <div className="container mx-auto">
@@ -55,7 +62,7 @@ const Navbar = () => {
               </ul>
             </div>
           </div>
-           {/* right side like search add login buton option  */}
+          {/* right side like search add login buton option  */}
           <div className="flex gap-5 flex-1 items-center ">
             <input
               type="text"
@@ -63,30 +70,31 @@ const Navbar = () => {
               className="border border-gray-300 rounded-md flex-1 p-3 h-10 text-black" // Adjusted height and padding
             />
             <div className="text-white flex gap-2 space-x-2">
-              <Link to="/cart" className="relative p-2 hover:scale-105 transition-all duration-300">
-                 <BiCartAdd  className="w-8 h-8 " />
+              <Link
+                to="/cart"
+                className="relative p-2 hover:scale-105 transition-all duration-300"
+              >
+                <BiCartAdd className="w-8 h-8 " />
                 {cartItems > 0 && (
                   <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-2 py-1">
                     {cartItems}
                   </span>
                 )}
-          
-            </Link>
+              </Link>
             </div>
-            {
-              isUser ?     <ProfileDropdown/>:
+            {isUser ? (
+              <ProfileDropdown />
+            ) : (
               <Link to="/login">
-              <Button
-                variant="outline"
-                className="text-primary-red font-semibold text-lg hover:shadow-md h-10" // Ensure button height matches
-                size="lg"
-              >
-                Log in
-              </Button>
-            </Link>
-
-            }
-          
+                <Button
+                  variant="outline"
+                  className="text-primary-red font-semibold text-lg hover:shadow-md h-10" // Ensure button height matches
+                  size="lg"
+                >
+                  Log in
+                </Button>
+              </Link>
+            )}
           </div>
         </nav>
         <div className="block lg:hidden">

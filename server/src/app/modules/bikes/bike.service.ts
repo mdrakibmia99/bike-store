@@ -1,3 +1,4 @@
+import QueryBuilder from '../../builder/queryBuilder';
 import { IBike } from './bike.interface';
 import Bike from './bike.model';
 
@@ -8,18 +9,21 @@ const createBike = async (payload: IBike): Promise<IBike> => {
 };
 
 // create this service for get all bike
-const getBikes = async (searchTerm: string) => {
-  let filter = {};
-  if (searchTerm) {
-    // Create a regex to perform filter by name or brand or category wise
-    const regex = new RegExp(searchTerm as string, 'i');
+const getBikes = async (query: Record<string, unknown>) => {
+  const searchableFields = ['model','description', 'category' ,'brand', 'name'];
+  const bikeQuery = new QueryBuilder(Bike.find(), query)
+    .search(searchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-    filter = {
-      $or: [{ name: regex }, { brand: regex }, { category: regex }],
+    const result = await bikeQuery.modelQuery;
+    const meta = await bikeQuery.countTotal();
+    return {
+      meta,
+      result,
     };
-  }
-  const result = await Bike.find(filter);
-  return result;
 };
 
 // create this service for get a Specific  bike
@@ -30,6 +34,7 @@ const getSpecificBike = async (id: string) => {
 
 // create this service for update a bike
 const updateBike = async (id: string, data: Partial<IBike>) => {
+  console.log(data,"update data")
   const result = await Bike.findByIdAndUpdate(id, data, { new: true });
   return result;
 };

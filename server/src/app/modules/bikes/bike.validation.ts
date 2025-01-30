@@ -1,31 +1,35 @@
 import { z } from 'zod';
 
-export const updateBikeDataValidation = z.object({
-  name: z.string().trim().optional(), // Optional field
-  brand: z.string().trim().optional(),
-  price: z
-    .number()
-    .min(0, { message: 'Price cannot be less than 0' })
-    .optional(),
+ const updateBikeValidationSchema = z.object({
+  body: z.object({
+  image: z.string().optional(),
+  name: z.string().optional(),
+  brand: z.string().optional(),
+  price: z.number().min(0).optional(),
   category: z.enum(['Mountain', 'Road', 'Hybrid', 'Electric']).optional(),
-  description: z.string().trim().optional(),
-  quantity: z
-    .number()
-    .min(0, { message: 'Quantity cannot be less than 0' })
-    .optional(),
-    inStock:z.boolean().optional()
+  model:z.string().trim().optional(),
+  description: z.string().optional(),
+  quantity: z.number().int().min(0).optional(),
+  inStock: z.boolean().optional()
+})
 });
 
 const bikeValidationSchema = z.object({
 body: z.object({
+  image: z.string(),
   name: z.string(),
   brand: z.string(),
   price: z.number().min(0),
   category: z.enum(['Mountain', 'Road', 'Hybrid', 'Electric']),
+  model:z.string().trim(),
   description: z.string(),
   quantity: z.number().int().min(0),
-  inStock: z.boolean()
+  // inStock: z.boolean()
 })
 });
 
-export default bikeValidationSchema;
+export const bikeValidation={
+  bikeValidationSchema,
+  updateBikeValidationSchema
+
+};

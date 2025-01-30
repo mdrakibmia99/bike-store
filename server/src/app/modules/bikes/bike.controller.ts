@@ -1,9 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
 import { bikeService } from './bike.service';
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
-import { updateBikeDataValidation } from './bike.validation';
 
+// create a controller for get all bikes
 const createBike = catchAsync(async (req, res) => {
   await bikeService.createBike(req.body);
   res.status(StatusCodes.OK).json({
@@ -13,93 +12,58 @@ const createBike = catchAsync(async (req, res) => {
   });
 });
 
-// create a controller for get all bikes
-const getBikes = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { searchTerm } = req.query;
-    //  get bike use bike service function
-    const result = await bikeService.getBikes(searchTerm as string);
-    // send response
-    res.status(200).json({
-      success: true,
-      message: 'all bikes get successfully',
-      data: result,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    next(error);
-  }
-};
+// get all bike
+const getBikes = catchAsync(async (req, res) => {
+  const queryData = req?.query;
+  //  get bike use bike service function
+  const result = await bikeService.getBikes(queryData);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'All bikes get successfully',
+    statusCode: StatusCodes.OK,
+    data: result,
+  });
+});
 
 // create a controller for get specific bikes
-const getSpecificBike = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // get id of a bike
-    const productId = req.params.productId;
-    const result = await bikeService.getSpecificBike(productId);
-    // send response
-    if (result) {
-      res.status(201).json({
-        success: true,
-        message: 'Bike retrieved successfully',
-        data: result,
-      });
-    }
-    res.status(404).json({
-      success: false,
-      message: 'Can not find any bike data',
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    next(err);
-  }
-};
+const getSpecificBike = catchAsync(async (req, res) => {
+  const productId = req.params.productId;
+  const result = await bikeService.getSpecificBike(productId);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'Bike retrieved successfully',
+    statusCode: StatusCodes.OK,
+    data: result,
+  });
+});
 
 // create a controller for update bikes
-const updateBike = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // get bike id
-    const productId = req.params.productId;
-    const body = req.body;
-    const validBody = updateBikeDataValidation.parse(body);
-    const result = await bikeService.updateBike(productId, validBody);
-    // send response
-    res.status(201).json({
-      success: true,
-      message: 'Bike updated successfully',
-      data: result,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    next(err);
-  }
-};
+const updateBike = catchAsync(async (req, res) => {
+  const productId = req?.params?.productId;
+  const body = req.body;
+  console.log(body, 'body');
+  const result = await bikeService.updateBike(productId, body);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'Bike update successfully',
+    statusCode: StatusCodes.OK,
+    data: result,
+  });
+});
 
 // create a controller for delete bike
-const deleteBike = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // get id from parameters
-    const productId = req.params.productId;
-    await bikeService.deleteBike(productId);
-    // send response
-    res.status(201).json({
-      success: true,
-      message: 'Bike  deleted successfully',
-      data: {},
-    });
+const deleteBike = catchAsync(async (req, res) => {
+  // get id from parameters
+  const productId = req.params.productId;
+  await bikeService.deleteBike(productId);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    next(err);
-  }
-};
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'Bike Delete successfully',
+    statusCode: StatusCodes.OK,
+    data: null,
+  });
+});
 
 export const bikeController = {
   createBike,

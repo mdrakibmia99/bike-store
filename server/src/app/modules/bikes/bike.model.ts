@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import { IBike } from './bike.interface';
 
 const bikeSchema = new Schema<IBike>(
-  {
+  { image: { type: String, trim: true, required: [true, 'Image is Required'] },
     name: { type: String, trim: true, required: [true, 'Name is Required'] },
     brand: {
       type: String,
@@ -21,6 +21,11 @@ const bikeSchema = new Schema<IBike>(
         message: '{VALUE} is not a valid category',
       },
     },
+    model: {
+      type: String,
+      trim: true,
+      required: [true, 'Bike model is Required'],
+    },
     description: {
       type: String,
       trim: true,
@@ -34,6 +39,7 @@ const bikeSchema = new Schema<IBike>(
     inStock: {
       type: Boolean,
       required: [true, 'inStock value will be true or false'],
+      default: true,
     },
   },
   {

@@ -14,8 +14,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInputField from "@/components/custom-input/CustomInputField";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { verifyToken } from "@/utils/verifyToken";
+import { selectCurrentUser, setUser } from "@/redux/features/auth/authSlice";
+import BackHome from "@/components/shared/navbar/BackHome";
 
 // Improved schema with additional validation rules
 const formSchema = z.object({
@@ -27,32 +32,49 @@ const formSchema = z.object({
 });
 
 export default function LoginPreview() {
+
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const navigate=useNavigate()
+  const token = useAppSelector(selectCurrentUser)
+
+
+  
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "customer@gmail.com",
+      password: "customer",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      // Assuming an async login function
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+    const toastId = toast.loading('Logging in');
+    try{
+      const userInfo={
+          email:values.email,
+          password:values.password
+      }
+      const res=await login(userInfo).unwrap();
 
+      const user = verifyToken(res.data.token)
+      dispatch(setUser({user:user,token:res?.data.token}))
+      toast.success('Logged in', { id: toastId, duration: 2000 });
+      navigate(`/`);
+
+
+  }catch{
+      toast.error('Something went wrong', { id: toastId, duration: 2000 });
+  }
+  }
+if(token){
+  return <BackHome message="YOu Are Already Login!"/>
+}
   return (
-    <div className="h-[60vh] grid place-content-center">
-      <Card className="mx-auto w-full md:w-96 lg:w-96">
+    <div className="h-[100vh] grid place-content-center">
+      <Card className="mx-auto w-full md:w-96 lg:w-96 relative">
+      <p onClick={()=>navigate('/')} className="border inline font-bold shadow-md hover:shadow-sm hover:cursor-pointer px-3 py-1 rounded-full absolute top-0 right-0 m-2">X</p>
         <CardHeader>
           <CardTitle className="text-2xl text-center">Login</CardTitle>
         </CardHeader>

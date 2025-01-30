@@ -4,5 +4,5 @@ export const createToken = (
   secret: string,
   expiresIn: string | number,
 ) => {
-  return jwt.sign(jwtPayload, secret, { expiresIn: expiresIn } as SignOptions);
+  return jwt.sign(jwtPayload, secret, { expiresIn } as SignOptions);
 };

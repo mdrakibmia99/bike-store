@@ -14,7 +14,7 @@ import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
 
 const persistConfig = {
-  key: "auth",
+  key: "BikeAuth",
   storage,
 };
 

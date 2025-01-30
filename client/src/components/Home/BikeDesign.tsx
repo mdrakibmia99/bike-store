@@ -3,7 +3,7 @@ import { Play } from "lucide-react";
 
 export default function BikeDesign() {
   return (
-    <section className="bg-black text-white py-12 px-6 md:px-12 lg:px-20">
+    <section className="container mx-auto bg-black text-white py-12 px-6 md:px-12 lg:px-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         {/* Left Section - Text */}
         <div>

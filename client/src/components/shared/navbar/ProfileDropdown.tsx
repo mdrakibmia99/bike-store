@@ -10,8 +10,10 @@ import { useLogOutMutation } from "@/redux/features/auth/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
+import { TUser } from "@/types/types";
 
-export function ProfileDropdown() {
+export function ProfileDropdown({user}:{user: TUser}) {
+
   const dispatch = useAppDispatch();
   const [logOut] = useLogOutMutation();
   const handleLogOut = async () => {
@@ -32,7 +34,7 @@ export function ProfileDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 mt-8 p-2  ">
         <DropdownMenuItem className="cursor-pointer border-b hover:text-primary-red">
-          Profile
+          {user?.name}
         </DropdownMenuItem>
         <Link to="/dashboard">
           <DropdownMenuItem className="cursor-pointer border-b hover:text-primary-red">

@@ -1,0 +1,242 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import CustomInputField from "@/components/custom-input/CustomInputField";
+import { useCreateProductMutation } from "@/redux/features/products/productApi";
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required."),
+  image: z.string().min(1, "Image is required."),
+  description: z.string().min(1, "Description is required."),
+  brand: z.string().min(1, "Brand is required."),
+  price: z.number().min(1, "Price cannot be  0."),
+  quantity: z.number().min(1, "Quantity cannot be 0."),
+  category: z.enum(["Mountain", "Road", "Hybrid", "Electric"], {
+    errorMap: () => ({ message: "Invalid category" }),
+  }),
+  model: z.string().min(1, "Model is required."),
+});
+
+const AddProduct = () => {
+  const [open, setOpen] = useState(false);
+  const [addProduct] = useCreateProductMutation();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      image: "",
+      description: "",
+      brand: "",
+      price: 0,
+      quantity: 0,
+      category: undefined,
+      model: "",
+    },
+  });
+
+  const { reset } = form;
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Adding Product...");
+
+    try {
+      console.log("Product Data:", data);
+      const res = await addProduct(data);
+      console.log(res, "trest");
+      if (res?.data) {
+        toast.success("Product added successfully!", { id: toastId });
+        reset();
+        setOpen(false);
+      } else if (res?.error) {
+        toast.error("Failed to add product. Please try again.", {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to add product. Please try again.", { id: toastId });
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          onClick={() => setOpen(true)}
+          className="bg-primary-black hover:shadow-md rounded"
+        >
+          Add Product
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogTitle className="sr-only">Add Product</DialogTitle>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 max-w-md mx-auto w-full"
+          >
+            {/* Name */}
+            <CustomInputField
+              name="name"
+              label="Bike Name"
+              placeholder="Enter Product name"
+              type="text"
+              control={form.control}
+            />
+
+            {/* Image */}
+            <CustomInputField
+              name="image"
+              label="Product Image Link"
+              placeholder="Enter image Link.."
+              type="text"
+              control={form.control}
+            />
+
+            {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Enter description" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Category (Select) */}
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Mountain">Mountain</SelectItem>
+                          <SelectItem value="Road">Road</SelectItem>
+                          <SelectItem value="Hybrid">Hybrid</SelectItem>
+                          <SelectItem value="Electric">Electric</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Model */}
+            <CustomInputField
+              name="model"
+              label="Bike Model"
+              placeholder="Bike Model.."
+              type="text"
+              control={form.control}
+            />
+
+            {/* Brand */}
+            <CustomInputField
+              name="brand"
+              label="Brand Name"
+              placeholder="Enter Brand name"
+              type="text"
+              control={form.control}
+            />
+
+            <div className="flex gap-4 justify-between items-center ">
+              {/* Price */}
+
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Price"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Quantity */}
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Quantity</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Quantity"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? "" : value);
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-primary-black hover:shadow-md rounded"
+            >
+              Add Product
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default AddProduct;

@@ -1,193 +1,92 @@
-import * as React from "react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const data: Product[] = [
-  {
-    id: "1",
-    image: "https://via.placeholder.com/50",
-    name: "Mountain Bike",
-    brand: "Brand A",
-    price: 499,
-    quantity: 10,
-  },
-  {
-    id: "2",
-    image: "https://via.placeholder.com/50",
-    name: "Road Bike",
-    brand: "Brand B",
-    price: 899,
-    quantity: 5,
-  },
-  {
-    id: "3",
-    image: "https://via.placeholder.com/50",
-    name: "Hybrid Bike",
-    brand: "Brand C",
-    price: 699,
-    quantity: 8,
-  },
-];
-
-export type Product = {
-  id: string;
-  image: string;
-  name: string;
-  brand: string;
-  price: number;
-  quantity: number;
-};
-
-export const columns: ColumnDef<Product>[] = [
-  {
-    accessorKey: "image",
-    header: "Image",
-    cell: ({ row }) => (
-      <img src={row.getValue("image")} alt="Bike" className="w-12 h-12" />
-    ),
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Name <ArrowUpDown />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "brand",
-    header: "Brand",
-    cell: ({ row }) => <div>{row.getValue("brand")}</div>,
-  },
-  {
-    accessorKey: "price",
-    header: "Price",
-    cell: ({ row }) => `$${row.getValue("price")}`,
-  },
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-    cell: ({ row }) => row.getValue("quantity"),
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <MoreHorizontal />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-];
+import Loading from "@/components/Loading";
+import { useAllProductsQuery } from "@/redux/features/products/productApi";
+import { useState } from "react";
+import AddProduct from "./AddProduct";
+import EditProductDetails from "./EditProductDetails";
+import { FaTimes, FaCheck } from "react-icons/fa"; 
 
 export function ProductTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const { isLoading, data } = useAllProductsQuery(undefined);
+ 
+  const [search, setSearch] = useState("");
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+  const filteredData = data?.data?.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const dataLength = filteredData?.length;
+  if (isLoading) return <Loading/>;
 
   return (
-    <div className="md:w-full w-[800px] overflow-auto">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by bike name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex justify-between pr-1">
+     
+      <input
+      className="p-2 my-3 border-black border-2 text-black rounded-md"
+      type="text"
+      placeholder="Search name..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      />
+       <AddProduct/>
       </div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <table className="w-full  text-sm text-left rtl:text-right text-gray-500 ">
+        <thead className="text-xs text-gray-50 uppercase bg-slate-700  ">
+          <tr>
+            <th scope="col" className="px-6 py-3">
+              Image
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Brand
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Category
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Price
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Quantity
+            </th>
+            <th scope="col" className="px-6 py-3">
+              In Stock
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
+          </tr>
+        </thead>
+        {(dataLength as number) > 0 && (
+          <tbody>
+            {filteredData?.map((item) => (
+              <tr className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                >
+                  <img src={item.image} className="w-8 h-8 rounded-full" alt="product Image" />
+                </th>
+                <td className="px-6 py-4">{item?.name}</td>
+                <td className="px-6 py-4">{item?.brand}</td>
+                <td className="px-6 py-4"> {item?.category}</td>
+                <td className="px-6 py-4">{item?.price}</td>
+                <td className="px-6 py-4">{item?.quantity}</td>
+                <td className="px-6 py-4">{item?.quantity===0?<FaTimes className="w-4 text-red-500"/> : <FaCheck className="w-4 text-green-500"/>}</td>
+                <td className="px-6 py-4">
+                   <EditProductDetails product={item}/>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
+      </table>
+      {dataLength === 0 && (
+        <div className="w-full h-[150px] grid place-items-center text-2xl ">
+          <p>Not Found any Product</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -21,7 +21,8 @@ const getBikes = catchAsync(async (req, res) => {
     success: true,
     message: 'All bikes get successfully',
     statusCode: StatusCodes.OK,
-    data: result,
+    data: result.result,
+    meta:result.meta
   });
 });
 
@@ -41,6 +42,7 @@ const getSpecificBike = catchAsync(async (req, res) => {
 const updateBike = catchAsync(async (req, res) => {
   const productId = req?.params?.productId;
   const body = req.body;
+  console.log(productId,body);
   console.log(body, 'body');
   const result = await bikeService.updateBike(productId, body);
   res.status(StatusCodes.OK).json({

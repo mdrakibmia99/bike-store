@@ -13,6 +13,9 @@ import ProductCreate from "@/pages/Dashboard/ProductCreate";
 import FAQPage from "@/pages/FAQPage";
 import CartPage from "@/pages/CartPage";
 import ProductDetails from "@/pages/ProductDetails";
+import DashboardProtected from "@/utils/DashboardProtected";
+import AdminDashboardIndex from "@/pages/Dashboard/admin/AdminDashboardIndex";
+import AdminProducts from "@/pages/Dashboard/admin/AdminProducts";
 
 
 export const router = createBrowserRouter([
@@ -59,16 +62,21 @@ export const router = createBrowserRouter([
   },
   {
   path:'/admin/dashboard',
-  element: <DashboardLayout/>,
+  element: <DashboardProtected role="admin"><DashboardLayout/></DashboardProtected> ,
   children:[
     {
-      path: "/admin/dashboard/orders/all",
-      element: < ProductCreate/>,
-    }]
+      path: "/admin/dashboard",
+      element: <AdminDashboardIndex/>,
+    },
+    {
+      path: "/admin/dashboard/products",
+      element: <AdminProducts/>,
+    },
+  ]
   },
   {
   path:'/user/dashboard',
-  element: <DashboardLayout/>,
+  element: <DashboardProtected role="customer"><DashboardLayout/></DashboardProtected>,
   children:[
     {
       path: "/user/dashboard/orders/all",

@@ -15,6 +15,7 @@ import { ProfileDropdown } from "./ProfileDropdown";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
+import { TUser } from "@/types/types";
 
 const menuList = [
   { id: 1, name: "HOME", link: "/" },
@@ -30,7 +31,7 @@ const Navbar = () => {
   const cartItems = 22;
   let isUser;
   if (token) {
-    isUser = verifyToken(token);
+    isUser = verifyToken(token)  ;
   }
 
   return (
@@ -83,7 +84,7 @@ const Navbar = () => {
               </Link>
             </div>
             {isUser ? (
-              <ProfileDropdown />
+              <ProfileDropdown user={isUser as TUser}/>
             ) : (
               <Link to="/login">
                 <Button

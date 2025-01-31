@@ -12,7 +12,6 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import ProductCreate from "@/pages/Dashboard/ProductCreate";
 import FAQPage from "@/pages/FAQPage";
 import CartPage from "@/pages/CartPage";
-import { ProfileDropdown } from "@/components/shared/navbar/ProfileDropdown";
 import ProductDetails from "@/pages/ProductDetails";
 
 
@@ -59,11 +58,20 @@ export const router = createBrowserRouter([
     ],
   },
   {
-  path:'/dashboard',
+  path:'/admin/dashboard',
   element: <DashboardLayout/>,
   children:[
     {
-      path: "/dashboard/orders/all",
+      path: "/admin/dashboard/orders/all",
+      element: < ProductCreate/>,
+    }]
+  },
+  {
+  path:'/user/dashboard',
+  element: <DashboardLayout/>,
+  children:[
+    {
+      path: "/user/dashboard/orders/all",
       element: < ProductCreate/>,
     }]
   },

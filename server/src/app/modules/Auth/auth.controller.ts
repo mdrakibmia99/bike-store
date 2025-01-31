@@ -9,7 +9,7 @@ import { JwtPayload } from 'jsonwebtoken';
 const login = catchAsync(async (req: Request, res: Response) => {
   // console.log(req.body,"test login data req.body")
   const result = await authService.login(req.body);
-  const { refreshToken } = result;
+  const { refreshToken ,accessToken} = result;
 
   // set refresh token in cookies
   res.cookie('refreshToken', refreshToken, {
@@ -21,7 +21,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
     message: 'Login successful',
     statusCode: StatusCodes.OK,
     data: {
-      token: result.accessToken,
+      token: accessToken,
     },
   });
 });

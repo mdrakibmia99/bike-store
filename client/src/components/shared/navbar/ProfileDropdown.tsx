@@ -40,7 +40,7 @@ export function ProfileDropdown({ user }: { user: TUser }) {
         </DropdownMenuItem>
         <DropdownMenuItem>
           {user?.role === "admin" ? (
-            <Link to={"/Dashboard"} className="w-full">
+            <Link to={"/admin/dashboard"} className="w-full">
               <Button
                 variant={"outline"}
                 className="w-full hover:text-primary-red"
@@ -49,7 +49,7 @@ export function ProfileDropdown({ user }: { user: TUser }) {
               </Button>
             </Link>
           ) : (
-            <Link to={"/Dashboard"} className="w-full">
+            <Link to={"/user/dashboard"} className="w-full">
               <Button
                 variant={"outline"}
                 className="w-full hover:text-primary-red"

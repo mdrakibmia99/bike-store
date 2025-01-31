@@ -1,16 +1,20 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import DashboardSidebar from "../dashboard/DashboardSidebar";
-
-
-
-
+import { useAppDispatch } from "@/redux/hooks";
+import { useLogOutMutation } from "@/redux/features/auth/authApi";
+import { logout } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-
-
+  const dispatch = useAppDispatch();
+  const [logOut] = useLogOutMutation();
+  const handleLogOut = async () => {
+    dispatch(logout());
+    toast.success("logout!");
+    await logOut({});
+  };
 
   return (
     <div className="flex h-screen">
@@ -22,7 +26,7 @@ export default function DashboardLayout() {
         <div className="p-4 text-lg font-semibold border-b border-gray-700">
           ROYAL KNIGHT
         </div>
-      <DashboardSidebar/>
+        <DashboardSidebar />
       </div>
       <div className="flex-1 flex flex-col">
         <div className="bg-gray-100 h-16 px-4 flex items-center justify-between shadow-md">
@@ -47,7 +51,7 @@ export default function DashboardLayout() {
           </button>
           <h1 className="text-xl font-semibold">Dashboard</h1>
           <div>
-            <button className="text-gray-700 font-medium pr-10">Logout</button>
+            <button onClick={handleLogOut} className="text-gray-700 font-medium pr-10">Logout</button>
           </div>
         </div>
         <div className="flex-1 bg-gray-50 overflow-y-auto p-4">

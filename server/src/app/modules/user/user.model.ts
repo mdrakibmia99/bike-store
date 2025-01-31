@@ -27,6 +27,14 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    address: {
+      type: String,
+      default: 'N/A',
+    },
+    phone:{
+      type: String,
+      default: 'N/A',
+    }
   },
   {
     timestamps: true,

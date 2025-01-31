@@ -22,7 +22,8 @@ const moduleRoutes=[
     {
         path:"/orders",
         route:orderRoutes
-    }
+    },
+
 ]
 
 moduleRoutes.forEach(route=>router.use(route.path,route.route))

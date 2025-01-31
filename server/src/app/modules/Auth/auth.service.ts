@@ -52,7 +52,7 @@ const login = async (payload: { email: string; password: string }) => {
 
   //create token and sent to the  client side
   const jwtPayload = {
-    name:user?.name,
+    name: user?.name,
     email: user?.email,
     role: user?.role,
     userId: user?._id,
@@ -127,7 +127,7 @@ const updatePassword = async (
     payload?.oldPassword,
     user?.password,
   );
- 
+
   if (!isPasswordMatched) {
     throw new AppError(
       StatusCodes.FORBIDDEN,
@@ -143,10 +143,18 @@ const updatePassword = async (
     password: newPassword,
   });
 };
+const profileUpdate = async (
+  userId: string,
+  payload: Record<string, unknown>,
+) => {
+ const result= await User.findByIdAndUpdate(userId, payload,{ new: true });
+ return result
+};
 
 export const authService = {
   register,
   login,
   refreshToken,
   updatePassword,
+  profileUpdate
 };

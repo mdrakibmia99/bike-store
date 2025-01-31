@@ -22,11 +22,18 @@ authRouter.post(
   validateRequest(authValidation.refreshTokenValidationSchema),
   authController.refreshToken,
 );
-authRouter.post(
+authRouter.patch(
   '/update-password',
   auth(USER_ROLE.customer, USER_ROLE.admin),
   validateRequest(authValidation.updatePasswordValidationSchema),
   authController.updatePassword,
 );
+authRouter.patch(
+  '/update-profile',
+  auth(USER_ROLE.customer, USER_ROLE.admin),
+  validateRequest(userValidation.userProfileValidationSchema),
+  authController.profileUpdate,
+);
+
 authRouter.post('/logout', authController.logOut);
 export default authRouter;

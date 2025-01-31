@@ -6,10 +6,11 @@ import { Request, Response } from 'express';
 import config from '../../config';
 import { JwtPayload } from 'jsonwebtoken';
 
+
 const login = catchAsync(async (req: Request, res: Response) => {
   // console.log(req.body,"test login data req.body")
   const result = await authService.login(req.body);
-  const { refreshToken ,accessToken} = result;
+  const { refreshToken, accessToken } = result;
 
   // set refresh token in cookies
   res.cookie('refreshToken', refreshToken, {
@@ -50,8 +51,8 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 const updatePassword = catchAsync(async (req, res) => {
-   const user=req.user;
-   const payload=req.body
+  const user = req.user;
+  const payload = req.body;
   const result = await authService.updatePassword(user as JwtPayload, payload);
   // console.log(result,"controler result");
   sendResponse(res, {
@@ -61,6 +62,19 @@ const updatePassword = catchAsync(async (req, res) => {
     data: {
       token: result,
     },
+  });
+});
+
+// update profile
+const profileUpdate = catchAsync(async (req, res) => {
+  const userId = req?.user?.userId as string;
+  const payload = req.body;
+  const result = await authService.profileUpdate(userId, payload);
+  sendResponse(res, {
+    success: true,
+    message: 'Update profile Successful',
+    statusCode: StatusCodes.OK,
+    data: result,
   });
 });
 const logOut = (req: Request, res: Response) => {
@@ -79,4 +93,5 @@ export const authController = {
   refreshToken,
   updatePassword,
   logOut,
+  profileUpdate,
 };

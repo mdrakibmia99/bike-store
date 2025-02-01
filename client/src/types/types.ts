@@ -47,7 +47,18 @@ export type TUser={
     updatedAt?: Date;
   }
   
-  
+  export interface IUser {
+    profileImage:string,
+    name: string;
+    email: string;
+    password: string;
+    role?: 'customer' | 'admin';
+    isBlocked?: boolean;
+    address:string;
+    phone:string;
+  }
+
+
 
 
   export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;

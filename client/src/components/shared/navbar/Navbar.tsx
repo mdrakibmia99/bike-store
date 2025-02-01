@@ -29,130 +29,137 @@ const Navbar = () => {
   const token = useAppSelector(selectCurrentToken);
   const location = useLocation();
   const cartItems = 22;
-  let isUser;
-  if (token) {
-    isUser = verifyToken(token)  ;
-  }
+
+  const isUser = token ? verifyToken(token) : null;
 
   return (
     <section className="py-4 bg-black sticky top-0 z-50">
-      <div className="container mx-auto">
-        <nav className="hidden justify-between gap-5 lg:flex lg:items-center">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <img src={navbarImg} className="w-28" alt="logo" />
-            </div>
-            <div className="flex items-center text-white  font-bold">
-              <ul className="flex gap-6">
-                {menuList.map((item) => (
-                  <li className="relative group" key={item.id}>
-                    <Link to={item.link}>
-                      <span
-                        className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
-                          item.link === location.pathname
-                            ? "text-primary-red"
-                            : ""
-                        }`}
-                      >
-                        {item.name}
-                      </span>
-                    </Link>
-                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary-red transition-all duration-300 group-hover:w-full"></span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          {/* right side like search add login buton option  */}
-          <div className="flex gap-5 flex-1 items-center ">
-            <input
-              type="text"
-              placeholder="Search by brand, name, or category"
-              className="border border-gray-300 rounded-md flex-1 p-3 h-10 text-black" // Adjusted height and padding
-            />
-            <div className="text-white flex gap-2 space-x-2">
-              <Link
-                to="/cart"
-                className="relative p-2 hover:scale-105 transition-all duration-300"
-              >
-                <BiCartAdd className="w-8 h-8 " />
-                {cartItems > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-2 py-1">
-                    {cartItems}
+      <div className="container mx-auto flex justify-between items-center px-4 lg:px-8">
+        {/* Left Side - Logo */}
+        <div className="flex items-center"><Link to={'/'}>
+          <img src={navbarImg} className="w-28" alt="logo" />
+        </Link>
+        </div>
+
+        {/* Middle - Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-6">
+          <ul className="flex gap-6 text-white font-bold">
+            {menuList.map((item) => (
+              <li className="relative group" key={item.id}>
+                <Link to={item.link}>
+                  <span
+                    className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
+                      item.link === location.pathname ? "text-primary-red" : ""
+                    }`}
+                  >
+                    {item.name}
                   </span>
-                )}
-              </Link>
-            </div>
-            {isUser ? (
-              <ProfileDropdown user={isUser as TUser}/>
-            ) : (
-              <Link to="/login">
-                <Button
-                  variant="outline"
-                  className="text-primary-red font-semibold text-lg hover:shadow-md h-10" // Ensure button height matches
-                  size="lg"
-                >
-                  Log in
-                </Button>
-              </Link>
-            )}
-          </div>
+                </Link>
+                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary-red transition-all duration-300 group-hover:w-full"></span>
+              </li>
+            ))}
+          </ul>
         </nav>
+
+        {/* Right Side - Cart & Login/Profile */}
+        <div className="hidden lg:flex items-center gap-5">
+          {/* Cart */}
+          <Link
+            to="/cart"
+            className="relative p-2 hover:scale-105 transition-all duration-300"
+          >
+            <BiCartAdd className="w-8 h-8 text-white" />
+            {cartItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+                {cartItems}
+              </span>
+            )}
+          </Link>
+
+          {/* Profile/Login Button */}
+          {isUser ? (
+            <ProfileDropdown user={isUser as TUser} />
+          ) : (
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="text-primary-red font-semibold text-lg hover:shadow-md h-10"
+              >
+                Log in
+              </Button>
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile Navbar - Drawer */}
         <div className="block lg:hidden">
-          <div className="flex items-center justify-between px-2">
-            <div className="flex items-center gap-2">
-              <img src={navbarImg} className="w-20" alt="logo" />
-            </div>
-            <Sheet>
-              <SheetTrigger asChild>
+          <Sheet>
+            <SheetTrigger asChild>
+              <div className="flex items-center gap-2">
+                <div className="flex  gap-3 items-center">
+                  {/* Cart */}
+                  <Link
+                    to="/cart"
+                    className="relative p-2 hover:scale-105 transition-all duration-300"
+                  >
+                    <BiCartAdd className="w-8 h-8 text-white" />
+                    {cartItems > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+                        {cartItems}
+                      </span>
+                    )}
+                  </Link>
+
+                  {/* Login/Profile */}
+                  {isUser ? (
+                    <ProfileDropdown user={isUser as TUser} />
+                  ) : (
+                    <Link to="/login">
+                      <Button
+                        variant="outline"
+                        className="text-primary-red font-semibold"
+                      >
+                        Log in
+                      </Button>
+                    </Link>
+                  )}
+                </div>
                 <Button variant="outline" size="icon">
                   <Menu className="size-4" />
                 </Button>
-              </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-semibold">
-                        ROYAL KNIGHT
-                      </span>
-                    </div>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mb-6 mt-6 flex flex-col gap-4">
+              </div>
+            </SheetTrigger>
+            <SheetContent className="overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-semibold">ROYAL KNIGHT</span>
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
+
+              {/* Mobile Menu List */}
+              <div className="mb-6 mt-6 flex flex-col gap-4">
                 <ul className="flex flex-col font-semibold gap-6">
-                {menuList.map((item) => (
-                  <li className="relative group" key={item.id}>
-                    <Link to={item.link}>
-                      <span
-                        className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
-                          item.link === location.pathname
-                            ? "text-primary-red"
-                            : ""
-                        }`}
-                      >
-                        {item.name}
-                      </span>
-                    </Link>
-                   
-                  </li>
-                ))}
-              </ul>
-                </div>
-
-                <div className="flex flex-col gap-3">
-
-                
-                  {/* <Button
-                    variant="outline"
-                    className="text-primary-red font-semibold"
-                  >
-                    Log in
-                  </Button> */}
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+                  {menuList.map((item) => (
+                    <li className="relative group" key={item.id}>
+                      <Link to={item.link}>
+                        <span
+                          className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
+                            item.link === location.pathname
+                              ? "text-primary-red"
+                              : ""
+                          }`}
+                        >
+                          {item.name}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </section>

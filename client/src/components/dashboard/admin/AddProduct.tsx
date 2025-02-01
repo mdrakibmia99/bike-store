@@ -91,12 +91,12 @@ const AddProduct = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
+        <button
           onClick={() => setOpen(true)}
-          className="bg-primary-black hover:shadow-md rounded"
+          className="bg-primary-black text-white py-2 px-3 hover:shadow-md rounded "
         >
           Add Product
-        </Button>
+        </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogTitle className="sr-only">Add Product</DialogTitle>

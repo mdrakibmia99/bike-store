@@ -38,7 +38,7 @@ const adminMenuItems = [
     },
     {
       name: " Profile Settings",
-      path: "/admin/dashboard/customer",
+      path: "/admin/dashboard/profile-setting",
       icon: <IoMdSettings className="w-7 h-7" />,
     },
   ];

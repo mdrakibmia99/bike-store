@@ -18,7 +18,7 @@ export function ProductTable() {
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <div className="flex justify-between pr-1">
+      <div className="flex justify-between items-center pr-1">
      
       <input
       className="p-2 my-3 border-black border-2 text-black rounded-md"
@@ -27,7 +27,7 @@ export function ProductTable() {
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       />
-       <AddProduct/>
+       <AddProduct />
       </div>
       <table className="w-full  text-sm text-left rtl:text-right text-gray-500 ">
         <thead className="text-xs text-gray-50 uppercase bg-slate-700  ">

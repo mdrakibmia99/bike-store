@@ -72,6 +72,18 @@ export const router = createBrowserRouter([
       path: "/admin/dashboard/products",
       element: <AdminProducts/>,
     },
+    {
+      path: "/admin/dashboard/orders",
+      element: <div>Admin dashboard order</div>,
+    },
+    {
+      path: "/admin/dashboard/customer",
+      element: <div>Admin dashboard customer</div>,
+    },
+    {
+      path: "/admin/dashboard/profile-setting",
+      element: <div>Admin dashboard customer</div>,
+    },
   ]
   },
   {

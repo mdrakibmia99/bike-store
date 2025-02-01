@@ -1,119 +1,92 @@
-import { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// Import user query hook
+import { useAllUserQuery } from "@/redux/features/Admin/allUsers/allUserApi";
 
-const ProfileUpdate = () => {
-  const { isLoading, data: user } = useUserQuery(undefined); // Fetch user data from DB
+import { useState } from "react";
 
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    image: "",
-  });
+import { FaTimes, FaCheck } from "react-icons/fa"; 
 
-  const [passwords, setPasswords] = useState({
-    oldPassword: "",
-    newPassword: "",
-  });
+export function AllUsers() {
+  const { isLoading, data } = useAllUserQuery(undefined);
+ 
+  const [search, setSearch] = useState("");
 
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      setProfile({
-        name: user.name || "",
-        email: user.email || "",
-        phone: user.phone || "", // Include phone number
-        image: user.image || "",
-      });
-    }
-  }, [user]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswords({ ...passwords, [e.target.name]: e.target.value });
-  };
-
-  if (isLoading) {
-    return <div className="text-center text-gray-600">Loading...</div>;
-  }
+  const filteredData = data?.data?.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const dataLength = filteredData?.length;
+  if (isLoading) return <Loading/>;
 
   return (
-    <div className="max-w-lg mx-auto p-6">
-      <Card>
-        <CardHeader className="flex items-center gap-4">
-          <Avatar className="w-20 h-20">
-            <AvatarImage src={profile.image || "https://via.placeholder.com/150"} />
-            <AvatarFallback>{profile.name?.charAt(0) || "U"}</AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Profile Information</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Label>Name</Label>
-          <Input name="name" value={profile.name} onChange={handleInputChange} disabled={!isEditingProfile} />
-
-          <Label className="mt-2">Email</Label>
-          <Input name="email" value={profile.email} onChange={handleInputChange} disabled={!isEditingProfile} />
-
-          <Label className="mt-2">Phone</Label>
-          <Input name="phone" value={profile.phone} onChange={handleInputChange} disabled={!isEditingProfile} />
-
-          <Label className="mt-2">Profile Image URL</Label>
-          <Input name="image" value={profile.image} onChange={handleInputChange} disabled={!isEditingProfile} />
-
-          <Button
-            className="mt-4"
-            variant="outline"
-            onClick={() => setIsEditingProfile(!isEditingProfile)}
-          >
-            {isEditingProfile ? "Save Changes" : "Edit Profile"}
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Change Password</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Label>Old Password</Label>
-          <Input
-            type="password"
-            name="oldPassword"
-            value={passwords.oldPassword}
-            onChange={handlePasswordChange}
-            disabled={!isEditingPassword}
-          />
-          <Label className="mt-2">New Password</Label>
-          <Input
-            type="password"
-            name="newPassword"
-            value={passwords.newPassword}
-            onChange={handlePasswordChange}
-            disabled={!isEditingPassword}
-          />
-          <Button
-            className="mt-4"
-            variant="outline"
-            onClick={() => setIsEditingPassword(!isEditingPassword)}
-          >
-            {isEditingPassword ? "Save Password" : "Update Password"}
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex justify-between items-center pr-1">
+     
+      <input
+      className="p-2 my-3 border-black border-2 text-black rounded-md"
+      type="text"
+      placeholder="Search name..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      />
+      </div>
+      <table className="w-full  text-sm text-left rtl:text-right text-gray-500 ">
+        <thead className="text-xs text-gray-50 uppercase bg-slate-700  ">
+          <tr>
+            <th scope="col" className="px-6 py-3">
+              Image
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Email
+            </th>
+            <th scope="col" className="px-6 py-3">
+             Phone
+            </th>
+            <th scope="col" className="px-6 py-3">
+             Address
+            </th>
+            <th scope="col" className="px-6 py-3">
+             Role
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Active
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
+          </tr>
+        </thead>
+        {(dataLength as number) > 0 && (
+          <tbody>
+            {filteredData?.map((item) => (
+              <tr className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                >
+                  <img src={item?.profileImage} className="w-8 h-8 rounded-full" alt="product Image" />
+                </th>
+                <td className="px-6 py-4">{item?.name}</td>
+                <td className="px-6 py-4">{item?.email}</td>
+                <td className="px-6 py-4"> {item?.phone}</td>
+                <td className="px-6 py-4">{item?.address}</td>
+                <td className="px-6 py-4">{item?.role}</td>
+                <td className="px-6 py-4">{item?.isBlocked?<FaTimes className="w-4 text-red-500"/> : <FaCheck className="w-4 text-green-500"/>}</td>
+                <td className="px-6 py-4">
+                {item?.isBlocked? <Button className="bg-green-600 hover:bg-green-700">Active</Button> : <Button className="bg-red-600 hover:bg-red-700">Block</Button>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
+      </table>
+      {dataLength === 0 && (
+        <div className="w-full h-[150px] grid place-items-center text-2xl ">
+          <p>Not Found any Product</p>
+        </div>
+      )}
     </div>
   );
-};
-
-export default ProfileUpdate;
+}

@@ -8,8 +8,8 @@ const Home = () => {
   return (
     <div className="bg-gray-100">
       <Banner />
-      <div className="container mx-auto ">
-        <h2 className="mt-16 text-center text-3xl md:text-5xl font-bold text-primary-black mb-16">
+      <div className="container mx-auto my-16">
+        <h2 className=" text-center text-3xl md:text-5xl font-bold text-primary-black mb-16">
           Feature Product
         </h2>
         <NewProducts />

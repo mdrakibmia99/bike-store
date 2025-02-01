@@ -1,7 +1,8 @@
-import Image1 from "@/assets/images/home/bike-1.jpg";
-import Image2 from "@/assets/images/home/bike-2.jpg";
+import img1 from '@/assets/images/hero-image/slider1.jpg'
+import img2 from '@/assets/images/hero-image/slider2.jpg'
+import img3 from '@/assets/images/hero-image/slider3.jpg'
 
 export const heroSLider = {
-  Image1,
-  Image2,
+
+  img1, img2, img3
 };

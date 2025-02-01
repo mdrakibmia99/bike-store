@@ -120,20 +120,35 @@ const Navbar = () => {
                   </SheetTitle>
                 </SheetHeader>
                 <div className="mb-6 mt-6 flex flex-col gap-4">
-                  <ul>
-                    <li>HOME</li>
-                    <li>ABOUT</li>
-                    <li>CONTACT</li>
-                  </ul>
+                <ul className="flex flex-col font-semibold gap-6">
+                {menuList.map((item) => (
+                  <li className="relative group" key={item.id}>
+                    <Link to={item.link}>
+                      <span
+                        className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${
+                          item.link === location.pathname
+                            ? "text-primary-red"
+                            : ""
+                        }`}
+                      >
+                        {item.name}
+                      </span>
+                    </Link>
+                   
+                  </li>
+                ))}
+              </ul>
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <Button
+
+                
+                  {/* <Button
                     variant="outline"
                     className="text-primary-red font-semibold"
                   >
                     Log in
-                  </Button>
+                  </Button> */}
                 </div>
               </SheetContent>
             </Sheet>

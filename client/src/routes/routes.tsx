@@ -16,8 +16,9 @@ import ProductDetails from "@/pages/ProductDetails";
 import DashboardProtected from "@/utils/DashboardProtected";
 import AdminDashboardIndex from "@/pages/Dashboard/admin/AdminDashboardIndex";
 import AdminProducts from "@/pages/Dashboard/admin/AdminProducts";
-import AllUsers from "@/pages/Dashboard/admin/AllUsers";
+
 import ProfileUpdate from "@/pages/Dashboard/ProfileUpdate";
+import { AllUsers } from "@/pages/Dashboard/admin/AllUsers";
 
 
 

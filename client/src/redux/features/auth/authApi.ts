@@ -29,14 +29,24 @@ const authApi = baseApi.injectEndpoints({
         method: "PATCH",
         body:data
       }),
+      invalidatesTags:['updateUserPass']
+    }),
+    updatePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/update-password",
+        method: "PATCH",
+        body:data
+      }),
+      
     }),
     authMe: builder.query({
       query: () => ({
         url: "/auth/me",
         method: "GET",
       }),
+    providesTags:['updateUserPass']
     }),
   }),
 });
 
-export const {useLoginMutation,useLogOutMutation,useSignUpMutation,useAuthMeQuery,useUpdateProfileMutation}=authApi
+export const {useLoginMutation,useLogOutMutation,useSignUpMutation,useAuthMeQuery,useUpdateProfileMutation,useUpdatePasswordMutation}=authApi

@@ -20,6 +20,7 @@ const userProfileValidationSchema = z.object({
     image: z.string().optional(),
     phone: z.string().optional(),
     address:z.string().optional(),
+    profileImage: z.string().optional(),
   }),
 });
 

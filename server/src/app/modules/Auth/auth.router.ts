@@ -7,6 +7,11 @@ import auth from '../../middlewares/auth';
 import { USER_ROLE } from './auth.interface';
 
 const authRouter = Router();
+authRouter.get(
+  '/me',
+  auth(USER_ROLE.customer, USER_ROLE.admin),
+  authController.authMe,
+);
 authRouter.post(
   '/register',
   validateRequest(userValidation.userValidationSchema),

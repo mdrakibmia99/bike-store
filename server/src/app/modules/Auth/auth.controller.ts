@@ -64,6 +64,16 @@ const updatePassword = catchAsync(async (req, res) => {
     },
   });
 });
+const authMe = catchAsync(async (req, res) => {
+ const userId = req?.user?.userId 
+  const result = await authService.authMe(userId);
+  sendResponse(res, {
+    success: true,
+    message: 'User Information getting successfully',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
+});
 
 // update profile
 const profileUpdate = catchAsync(async (req, res) => {
@@ -94,4 +104,5 @@ export const authController = {
   updatePassword,
   logOut,
   profileUpdate,
+  authMe
 };

@@ -147,8 +147,12 @@ const profileUpdate = async (
   userId: string,
   payload: Record<string, unknown>,
 ) => {
- const result= await User.findByIdAndUpdate(userId, payload,{ new: true });
- return result
+  const result = await User.findByIdAndUpdate(userId, payload, { new: true });
+  return result;
+};
+const authMe = async (userId: string) => {
+  const user = await User.findById(userId).select('-password');
+  return user;
 };
 
 export const authService = {
@@ -156,5 +160,6 @@ export const authService = {
   login,
   refreshToken,
   updatePassword,
-  profileUpdate
+  profileUpdate,
+  authMe,
 };

@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errors/AppError";
 import User from "../user/user.model";
+import QueryBuilder from "../../builder/queryBuilder";
 
 
 const blockUser = async (
@@ -24,6 +25,26 @@ const blockUser = async (
    
   };
 
+  // get users 
+
+  const getUsers = async (query: Record<string, unknown>) => {
+    const searchableFields = ['name'];
+    const bikeQuery = new QueryBuilder(User.find(), query)
+      .search(searchableFields)
+      .filter()
+      .sort()
+      .paginate()
+      .fields();
+  
+      const result = await bikeQuery.modelQuery;
+      const meta = await bikeQuery.countTotal();
+      return {
+        meta,
+        result,
+      };
+  };
+
   export const adminService = {
     blockUser,
+    getUsers
   }

@@ -4,12 +4,15 @@ import { adminService } from './admin.service';
 
 const blockUser = catchAsync(async (req, res) => {
   const userId = req.params.userId;
+  const body=req.body;
+  console.log(body)
   // console.log(userId,"admin user id")
-  await adminService.blockUser(userId);
+  const result= await adminService.blockUser(userId,body);
   res.status(StatusCodes.OK).json({
     success: true,
     message: 'User blocked successfully',
     statusCode: StatusCodes.OK,
+    data:result
   });
 });
 const getUsers = catchAsync(async (req, res) => {

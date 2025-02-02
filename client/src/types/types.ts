@@ -48,6 +48,7 @@ export type TUser={
   }
   
   export interface IUser {
+    _id:string;
     profileImage:string,
     name: string;
     email: string;

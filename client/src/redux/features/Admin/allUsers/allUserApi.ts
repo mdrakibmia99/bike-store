@@ -16,9 +16,20 @@ const allUsersApi = baseApi.injectEndpoints({
       },
       providesTags: ["allUser"],
     }),
+    updateBlockedUser: builder.mutation({
+      query: ({id,data}) => (console.log(id,data,"redux"),{
+        url: `/admin/users/${id}/block`,
+        method: "PATCH",
+        body: data
+      }),
+
+      invalidatesTags: ["allUser"],
+    }),
+    
   }),
 });
 
 export const {
-useAllUserQuery
+useAllUserQuery,
+useUpdateBlockedUserMutation
 } = allUsersApi;

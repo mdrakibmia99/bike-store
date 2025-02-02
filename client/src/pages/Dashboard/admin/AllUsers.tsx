@@ -1,19 +1,41 @@
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
-import { useAllUserQuery } from "@/redux/features/Admin/allUsers/allUserApi";
+import { useAllUserQuery, useUpdateBlockedUserMutation } from "@/redux/features/Admin/allUsers/allUserApi";
 
 import { useState } from "react";
 
 import { FaTimes, FaCheck } from "react-icons/fa"; 
+import { toast } from "sonner";
 
 export function AllUsers() {
   const { isLoading, data } = useAllUserQuery(undefined);
+  const [updateBlockedUser]=useUpdateBlockedUserMutation()
  
   const [search, setSearch] = useState("");
 
   const filteredData = data?.data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
+  const handleActiveUser=async(id:string)=>{
+    const data={isBlocked:true}
+    const res = await updateBlockedUser({id,data})
+    if(res?.data){
+      toast.success("User blocked successfully.", { duration: 3000 })
+    }else if(res?.error){
+      toast.error("Admin not will be blocked.", { duration: 3000 })
+    }else{
+      toast.error("Failed to block user.", { duration: 3000 })
+    }
+  }
+  const handleDeActiveUser=async(id:string)=>{
+    const data={isBlocked:false}
+    const res = await updateBlockedUser({id,data})
+    if(res?.data){
+      toast.success("User Active successfully.", { duration: 3000 })
+    }else{
+      toast.error("Please try again!", { duration: 3000 })
+    }
+  }
   const dataLength = filteredData?.length;
   if (isLoading) return <Loading/>;
 
@@ -75,7 +97,7 @@ export function AllUsers() {
                 <td className="px-6 py-4">{item?.role}</td>
                 <td className="px-6 py-4">{item?.isBlocked?<FaTimes className="w-4 text-red-500"/> : <FaCheck className="w-4 text-green-500"/>}</td>
                 <td className="px-6 py-4">
-                {item?.isBlocked? <Button className="bg-green-600 hover:bg-green-700">Active</Button> : <Button className="bg-red-600 hover:bg-red-700">Block</Button>}
+                {item?.isBlocked? <Button onClick={()=>handleDeActiveUser(item?._id)} className="bg-green-600 hover:bg-green-700">Active</Button> : <Button onClick={()=>handleActiveUser(item?._id)} className="bg-red-600 hover:bg-red-700">Block</Button>}
                 </td>
               </tr>
             ))}

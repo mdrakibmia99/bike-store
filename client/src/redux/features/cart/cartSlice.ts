@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 export interface ICartItem {
   inStock: boolean;
@@ -7,9 +8,10 @@ export interface ICartItem {
   category: string;
   brand: string;
   image: string;
-  product: string; // Product ID
+  _id: string; // Product ID
   name: string;
   price: number;
+  selectQuantity: number;
   quantity: number;
 }
 
@@ -24,7 +26,7 @@ const initialState: CartState = {
   totalQuantity: 0,
   totalPrice: 0,
 };
-
+const toastId={id:"toastID"}
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -32,34 +34,36 @@ const cartSlice = createSlice({
     addToCart(state, action: PayloadAction<ICartItem>) {
       console.log({ state: state.items });
       const existingItem = state.items.find(
-        (item) => item.product === action.payload.product
+        (item) => item._id === action.payload._id
       );
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
+        toast.warning("Already added just increment quantity",toastId)
+        existingItem.selectQuantity += action.payload.selectQuantity;
       } else {
         state.items.push(action.payload);
+        toast.success("Added to cart successfully",toastId);
       }
-      state.totalQuantity += action.payload.quantity;
-      state.totalPrice += action.payload.price * action.payload.quantity;
+      state.totalQuantity += action.payload.selectQuantity;
+      state.totalPrice += action.payload.price * action.payload.selectQuantity;
     },
     removeFromCart(state, action: PayloadAction<string>) {
       const itemId = action.payload;
-      const existingItem = state.items.find((item) => item.product === itemId);
+      const existingItem = state.items.find((item) => item._id === itemId);
       if (existingItem) {
-        state.totalQuantity -= existingItem.quantity;
-        state.totalPrice -= existingItem.price * existingItem.quantity;
-        state.items = state.items.filter((item) => item.product !== itemId);
+        state.totalQuantity -= existingItem.selectQuantity;
+        state.totalPrice -= existingItem.price * existingItem.selectQuantity;
+        state.items = state.items.filter((item) => item._id !== itemId);
       }
     },
     updateQuantity(
       state,
-      action: PayloadAction<{ id: string; quantity: number }>
+      action: PayloadAction<{ id: string; selectQuantity: number }>
     ) {
-      const { id, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.product === id);
-      if (existingItem && quantity > 0) {
-        const quantityDifference = quantity - existingItem.quantity;
-        existingItem.quantity = quantity;
+      const { id, selectQuantity } = action.payload;
+      const existingItem = state.items.find((item) => item._id === id);
+      if (existingItem && selectQuantity > 0) {
+        const quantityDifference = selectQuantity - existingItem.selectQuantity;
+        existingItem.selectQuantity = selectQuantity;
         state.totalQuantity += quantityDifference;
         state.totalPrice += quantityDifference * existingItem.price;
       }

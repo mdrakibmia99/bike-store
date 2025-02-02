@@ -27,18 +27,33 @@ const menuList = [
 
 const Navbar = () => {
   const token = useAppSelector(selectCurrentToken);
+  const cartData = useAppSelector((state) => state.cart);
   const location = useLocation();
-  const cartItems = 22;
 
+console.log(cartData,"cartData")
   const isUser = token ? verifyToken(token) : null;
+  const CartIcon = (
+    <Link
+      to="/cart"
+      className="relative p-2 hover:scale-105 transition-all duration-300"
+    >
+      <BiCartAdd className="w-8 h-8 text-white" />
+     
+        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+          {cartData?.items?.length}
+        </span>
+
+    </Link>
+  );
 
   return (
     <section className="py-4 bg-black sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center px-4 lg:px-8">
         {/* Left Side - Logo */}
-        <div className="flex items-center"><Link to={'/'}>
-          <img src={navbarImg} className="w-28" alt="logo" />
-        </Link>
+        <div className="flex items-center">
+          <Link to={"/"}>
+            <img src={navbarImg} className="w-28" alt="logo" />
+          </Link>
         </div>
 
         {/* Middle - Navigation Links */}
@@ -64,17 +79,7 @@ const Navbar = () => {
         {/* Right Side - Cart & Login/Profile */}
         <div className="hidden lg:flex items-center gap-5">
           {/* Cart */}
-          <Link
-            to="/cart"
-            className="relative p-2 hover:scale-105 transition-all duration-300"
-          >
-            <BiCartAdd className="w-8 h-8 text-white" />
-            {cartItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
-                {cartItems}
-              </span>
-            )}
-          </Link>
+          {CartIcon}
 
           {/* Profile/Login Button */}
           {isUser ? (
@@ -98,7 +103,8 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <div className="flex  gap-3 items-center">
                   {/* Cart */}
-                  <Link
+                  {CartIcon}
+                  {/* <Link
                     to="/cart"
                     className="relative p-2 hover:scale-105 transition-all duration-300"
                   >
@@ -108,7 +114,7 @@ const Navbar = () => {
                         {cartItems}
                       </span>
                     )}
-                  </Link>
+                  </Link> */}
 
                   {/* Login/Profile */}
                   {isUser ? (

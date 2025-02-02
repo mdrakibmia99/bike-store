@@ -1,48 +1,55 @@
 import { useParams, Link } from "react-router-dom";
 import { BiCart } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
-import bikeImge from "@/assets/images/home/bike-1.jpg";
+// import bikeImge from "@/assets/images/home/bike-1.jpg";
+import { useSpecificProductsQuery } from "@/redux/features/products/productApi";
+import Loading from "@/components/Loading";
 
-const products = [
-  {
-    id: 1,
-    name: "Mountain Bike X200",
-    brand: "Brand A",
-    model: "2023",
-    price: 1200,
-    category: "Mountain",
-    availability: "In Stock",
-    image: bikeImge,
-    description: "The Mountain Bike X200 is built for rugged terrain, offering excellent suspension and durability for extreme trails.",
-  },
-  {
-    id: 2,
-    name: "Roadster 5000",
-    brand: "Brand B",
-    model: "2022",
-    price: 950,
-    category: "Road",
-    availability: "Out of Stock",
-    image: bikeImge,
-    description: "The Roadster 5000 is a lightweight road bike with a carbon fiber frame, perfect for speed and endurance rides.",
-  },
-  {
-    id: 3,
-    name: "Electric Glide E100",
-    brand: "Brand C",
-    model: "2023",
-    price: 2500,
-    category: "Electric",
-    availability: "In Stock",
-    image: bikeImge,
-    description: "Experience the future of cycling with the Electric Glide E100, featuring a powerful motor and long battery life.",
-  },
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: "Mountain Bike X200",
+//     brand: "Brand A",
+//     model: "2023",
+//     price: 1200,
+//     category: "Mountain",
+//     availability: "In Stock",
+//     image: bikeImge,
+//     description: "The Mountain Bike X200 is built for rugged terrain, offering excellent suspension and durability for extreme trails.",
+//   },
+//   {
+//     id: 2,
+//     name: "Roadster 5000",
+//     brand: "Brand B",
+//     model: "2022",
+//     price: 950,
+//     category: "Road",
+//     availability: "Out of Stock",
+//     image: bikeImge,
+//     description: "The Roadster 5000 is a lightweight road bike with a carbon fiber frame, perfect for speed and endurance rides.",
+//   },
+//   {
+//     id: 3,
+//     name: "Electric Glide E100",
+//     brand: "Brand C",
+//     model: "2023",
+//     price: 2500,
+//     category: "Electric",
+//     availability: "In Stock",
+//     image: bikeImge,
+//     description: "Experience the future of cycling with the Electric Glide E100, featuring a powerful motor and long battery life.",
+//   },
+// ];
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+  const {data,isLoading}=useSpecificProductsQuery(id)
+  const product = data?.data;
+console.log(data?.data,"checking product")
 
+if(isLoading){
+  return <Loading/>
+}
   if (!product) {
     return <div className="text-center text-red-600 text-xl mt-10">Product not found!</div>;
   }
@@ -56,10 +63,10 @@ const ProductDetails = () => {
             <img src={product.image} alt={product.name} className="w-full h-[300px] md:h-[450px] object-cover" />
             <Badge
               className={`absolute top-3 right-3 px-3 py-1 text-sm font-semibold ${
-                product.availability === "In Stock" ? "bg-green-600 text-white" : "bg-red-600 text-white"
+                product?.inStock ? "bg-green-600 text-white" : "bg-red-600 text-white"
               }`}
             >
-              {product.availability}
+              { product?.inStock?'In Stock': 'Out of Stock' }
             </Badge>
           </div>
 
@@ -79,7 +86,8 @@ const ProductDetails = () => {
             <p className="mt-4 text-gray-700">{product.description}</p>
 
             {/* Buttons */}
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+            {
+              product?.inStock &&  <div className="mt-6 flex flex-col sm:flex-row gap-4">
               {/* Add to Cart Button */}
               <button
                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-semibold ${
@@ -99,6 +107,8 @@ const ProductDetails = () => {
                 </button>
               </Link>
             </div>
+            }
+           
           </div>
         </div>
       </div>

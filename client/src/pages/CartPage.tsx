@@ -1,56 +1,24 @@
-import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import cycle1 from "@/assets/images/bike-image-red.jpg"; // Assuming the image path
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { removeFromCart, updateQuantity } from "@/redux/features/cart/cartSlice";
 
 const CartPage = () => {
-  // Sample cart items
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Mountain Bike", price: 200, quantity: 1 },
-    { id: 2, name: "Road Bike", price: 300, quantity: 1 },
-    { id: 3, name: "Hybrid Bike", price: 150, quantity: 1 },
-  ]);
-
-  // Increase quantity
-  const handleIncrease = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  // Decrease quantity
-  const handleDecrease = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
-
-  // Delete item
-  const handleDelete = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  // Calculate total price
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
+  const cartData = useAppSelector((state) => state.cart);
+ const dispatch= useAppDispatch()
+ console.log(cartData,"check")
   return (
     <section className="container mx-auto min-h-[70vh] grid grid-cols-1 lg:grid-cols-12 gap-12 py-6">
       {/* Left Side: Product List */}
       <div className="lg:col-span-9 rounded-lg shadow-md p-6">
         <h2 className="text-xl font-bold mb-4">MY CART</h2>
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => (
+        {cartData?.items.length > 0 ? (
+          cartData?.items?.map((item) => (
             <div
-              key={item.id}
+            // product mean product id
+              key={item?._id}
               className="flex md:flex-row flex-col items-center justify-between gap-4 border-b border-gray-200 py-4"
             >
               <img
@@ -60,19 +28,29 @@ const CartPage = () => {
               />
               <div>
                 <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p className="text-sm text-gray-500">Model: Kono MOdel Nai</p>
+                <p className="text-sm text-gray-500">Model: {item?.model}</p>
               </div>
               <div className="flex items-center border rounded-md">
                 <button
                   className="px-3 py-1 border-r text-gray-600"
-                  onClick={() => handleDecrease(item.id)}
+                  onClick={() =>  dispatch(
+                    updateQuantity({
+                      id: item._id,
+                      selectQuantity: Math.max(item.selectQuantity - 1, 1),
+                    })
+                  ) }
                 >
                   -
                 </button>
-                <span className="px-4">{item.quantity}</span>
+                <span className="px-4">{item?.selectQuantity}</span>
                 <button
                   className="px-3 py-1 border-l text-gray-600"
-                  onClick={() => handleIncrease(item.id)}
+                  onClick={() =>  dispatch(
+                    updateQuantity({
+                      id: item._id,
+                      selectQuantity: Math.min(item?.selectQuantity + 1, item.quantity),
+                    })
+                  ) }
                 >
                   +
                 </button>
@@ -84,7 +62,7 @@ const CartPage = () => {
               </div>
               <div>
                 <Button
-                  onClick={() => handleDelete(item.id)}
+                 onClick={() => dispatch(removeFromCart(item?._id))}
                   variant="link"
                   className="text-primary-red flex items-center gap-2"
                 >
@@ -105,16 +83,16 @@ const CartPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6 sticky top-32">
           <h2 className="text-xl font-bold mb-4">Summary</h2>
           <div className="flex justify-between mb-2">
-            <span>Subtotal:</span>
-            <span>${totalPrice}</span>
+            <span className="text-xl">Total Product:</span>
+            <span className="text-2xl">{cartData?.totalQuantity}</span>
           </div>
-          <div className="flex justify-between mb-2">
+          {/* <div className="flex justify-between mb-2">
             <span>Tax (10%):</span>
             <span>${(totalPrice * 0.1).toFixed(2)}</span>
-          </div>
+          </div> */}
           <div className="flex justify-between font-bold text-lg mb-4">
-            <span>Total:</span>
-            <span>${(totalPrice + totalPrice * 0.1).toFixed(2)}</span>
+            <span className="text-xl">Total Price:</span>
+            <span  className="text-2xl">${cartData?.totalPrice}</span>
           </div>
           <Button className="w-full text-white bg-primary-red">Checkout</Button>
         </div>

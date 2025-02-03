@@ -16,7 +16,7 @@ import { z } from 'zod';
 
 const bikeValidationSchema = z.object({
 body: z.object({
-  image: z.string(),
+  image: z.string().optional(),
   name: z.string(),
   brand: z.string(),
   price: z.number().min(0),

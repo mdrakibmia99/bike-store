@@ -49,8 +49,8 @@ import Loading from "../Loading";
 // ];
 
 const NewProducts = () => {
-  const {data,isLoading}= useAllProductsQuery(undefined)
-  console.log(data?.data)
+  const {data,isLoading,isError}= useAllProductsQuery(undefined)
+  console.log(isError,"all products")
   if(isLoading){
     return <Loading/>
   }

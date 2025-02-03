@@ -1,14 +1,17 @@
-
 import { Button } from "@/components/ui/button";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import cycle1 from "@/assets/images/bike-image-red.jpg"; // Assuming the image path
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { removeFromCart, updateQuantity } from "@/redux/features/cart/cartSlice";
+import {
+  removeFromCart,
+  updateQuantity,
+} from "@/redux/features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const cartData = useAppSelector((state) => state.cart);
- const dispatch= useAppDispatch()
- console.log(cartData,"check")
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <section className="container mx-auto min-h-[70vh] grid grid-cols-1 lg:grid-cols-12 gap-12 py-6">
       {/* Left Side: Product List */}
@@ -17,7 +20,7 @@ const CartPage = () => {
         {cartData?.items.length > 0 ? (
           cartData?.items?.map((item) => (
             <div
-            // product mean product id
+              // product mean product id
               key={item?._id}
               className="flex md:flex-row flex-col items-center justify-between gap-4 border-b border-gray-200 py-4"
             >
@@ -33,24 +36,31 @@ const CartPage = () => {
               <div className="flex items-center border rounded-md">
                 <button
                   className="px-3 py-1 border-r text-gray-600"
-                  onClick={() =>  dispatch(
-                    updateQuantity({
-                      id: item._id,
-                      selectQuantity: Math.max(item.selectQuantity - 1, 1),
-                    })
-                  ) }
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        id: item._id,
+                        selectQuantity: Math.max(item.selectQuantity - 1, 1),
+                      })
+                    )
+                  }
                 >
                   -
                 </button>
                 <span className="px-4">{item?.selectQuantity}</span>
                 <button
                   className="px-3 py-1 border-l text-gray-600"
-                  onClick={() =>  dispatch(
-                    updateQuantity({
-                      id: item._id,
-                      selectQuantity: Math.min(item?.selectQuantity + 1, item.quantity),
-                    })
-                  ) }
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        id: item._id,
+                        selectQuantity: Math.min(
+                          item?.selectQuantity + 1,
+                          item.quantity
+                        ),
+                      })
+                    )
+                  }
                 >
                   +
                 </button>
@@ -62,7 +72,7 @@ const CartPage = () => {
               </div>
               <div>
                 <Button
-                 onClick={() => dispatch(removeFromCart(item?._id))}
+                  onClick={() => dispatch(removeFromCart(item?._id))}
                   variant="link"
                   className="text-primary-red flex items-center gap-2"
                 >
@@ -92,9 +102,16 @@ const CartPage = () => {
           </div> */}
           <div className="flex justify-between font-bold text-lg mb-4">
             <span className="text-xl">Total Price:</span>
-            <span  className="text-2xl">Tk.{cartData?.totalPrice}</span>
+            <span className="text-2xl">Tk.{cartData?.totalPrice}</span>
           </div>
-          <Button className="w-full text-white bg-primary-red">Checkout</Button>
+          {cartData?.items.length > 0 && (
+            <Button
+              className="w-full text-white bg-primary-red"
+              onClick={() => navigate("/order")}
+            >
+              Checkout
+            </Button>
+          )}
         </div>
       </div>
     </section>

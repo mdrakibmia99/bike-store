@@ -1,51 +1,76 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import AppError from '../../errors/AppError';
+import { TTokenResponse } from '../Auth/auth.interface';
 import Bike from '../bikes/bike.model';
-import { IOrder } from './order.interface';
+import User from '../user/user.model';
 import Order from './order.model';
+import { orderUtils } from './order.utils';
 
 // create this service for create a order
-const createOrder = async (payload: IOrder) => {
-  // find bike data use id 
-  const getBikeById = await Bike.findById(payload?.product);
+const createOrder = async (user: TTokenResponse, payload: { products: { _id: string; quantity: number }[] }, client_ip: string) => {
+  const id = user?.userId
+  const userData = await User.findById(id)
+  if (!payload?.products?.length)
+      throw new AppError(403, "Order is not specified");
 
-  // if bike data not found then show this error 
-  if (!getBikeById) {
-    const result = {
-      status: false,
-      message: 'Car not found!! please check your product id',
-    };
-    return result;
-  }
-  // if main data quantity will be getterthan from payload quantity 
-  if (getBikeById.quantity < payload?.quantity) {
-    const result = {
-      status: false,
-      message: `Insufficient stock, Stock available only ${getBikeById.quantity}`,
-    };
-    return result;
-  }
-  // if payload totalprice not equal to payload totaldata then this function work
-  if (payload?.totalPrice !== getBikeById?.price * payload.quantity) {
-    const result = {
-      status: false,
-      message: `Please send the correct total price (product price * quantity)[totalPrice will be ${getBikeById?.price * payload.quantity}]`,
-    };
-    return result;
-  }
+  const products = payload?.products;
 
-  // if every thing is okk then quantity will be reduce from main data and then it will be save
-  getBikeById.quantity -= payload.quantity;
-  if (getBikeById.quantity === 0) {
-    getBikeById.inStock = false;
-  }
-  await getBikeById.save();
 
-  const result = await Order.create(payload);
-  return {
-    success: true,
-    message: 'Order  created successfully',
-    data: result,
+  let totalPrice = 0;
+  const productDetails = await Promise.all(
+      products.map(async (item) => {
+          const product = await Bike.findById(item._id);
+          if (product) {
+              const subtotal = product ? (product?.price || 0) * item.quantity : 0;
+              totalPrice += subtotal;
+              return item;
+          }
+      })
+  );
+
+  const transformedProducts: any[] = [];
+
+  productDetails.forEach(product => {
+      transformedProducts.push({
+          product: product?._id,
+          quantity: product?.quantity,
+      });
+  });
+
+
+  let order = await Order.create({
+      user: id,
+      products: transformedProducts,
+      totalPrice,
+  });
+
+  // payment integration
+  const shurjopayPayload = {
+      amount: totalPrice,
+      order_id: order._id,
+      currency: "BDT",
+      customer_name: userData?.name,
+      customer_address: userData?.address,
+      customer_email: userData?.email,
+      customer_phone: userData?.phone,
+      customer_city: "N/A",
+      client_ip,
   };
-};
+
+  const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
+  console.log(payment,"payment")
+  if (payment?.transactionStatus) {
+      order = await order.updateOne({
+          transaction: {
+              id: payment.sp_order_id,
+              transactionStatus: payment.transactionStatus,
+          },
+      });
+  }
+
+  return payment.checkout_url;
+
+}
 // create this service for get total revenue
 const getTotalRevenue = async () => {
   const result = await Order.aggregate([

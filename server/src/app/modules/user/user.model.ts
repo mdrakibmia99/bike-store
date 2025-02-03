@@ -33,11 +33,11 @@ const userSchema = new Schema<IUser>(
     },
     address: {
       type: String,
-      default: 'N/A',
+      default: null,
     },
     phone:{
       type: String,
-      default: 'N/A',
+      default: null,
     }
   },
   {

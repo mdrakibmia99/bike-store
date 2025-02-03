@@ -22,6 +22,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body:info
       }),
+      invalidatesTags: ['product','allUser','updateUserPass']
     }),
     updateProfile: builder.mutation({
       query: (data) => ({

@@ -19,6 +19,8 @@ import AdminProducts from "@/pages/Dashboard/admin/AdminProducts";
 
 import ProfileUpdate from "@/pages/Dashboard/ProfileUpdate";
 import { AllUsers } from "@/pages/Dashboard/admin/AllUsers";
+import PrivetUserRoute from "@/utils/PrivetUserRoute";
+import OrderPage from "@/pages/OrderPage";
 
 
 
@@ -49,7 +51,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <CartPage />,
+        element:  <CartPage />,
+      },
+      {
+        path: "/order",
+        element: <PrivetUserRoute><OrderPage/></PrivetUserRoute> ,
       },
       {
         path: "/details/:id",

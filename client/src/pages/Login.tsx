@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CustomInputField from "@/components/custom-input/CustomInputField";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
@@ -36,11 +36,9 @@ export default function LoginPreview() {
   const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate=useNavigate()
+  const location=useLocation()
   const token = useAppSelector(selectCurrentUser)
 
-
-  
-  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +59,7 @@ export default function LoginPreview() {
       const user = verifyToken(res.data.token)
       dispatch(setUser({user:user,token:res?.data.token}))
       toast.success('Logged in', { id: toastId, duration: 2000 });
-      navigate(`/`);
+      navigate(location?.state || '/', { replace: true })
 
 
   }catch{

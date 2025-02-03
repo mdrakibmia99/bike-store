@@ -1,9 +1,11 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { BiCart } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
 // import bikeImge from "@/assets/images/home/bike-1.jpg";
 import { useSpecificProductsQuery } from "@/redux/features/products/productApi";
 import Loading from "@/components/Loading";
+import { useAppDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/features/cart/cartSlice";
 
 // const products = [
 //   {
@@ -44,9 +46,14 @@ import Loading from "@/components/Loading";
 const ProductDetails = () => {
   const { id } = useParams();
   const {data,isLoading}=useSpecificProductsQuery(id)
+  const navigate=useNavigate()
+  const dispatch=useAppDispatch()
   const product = data?.data;
 console.log(data?.data,"checking product")
-
+ const handleOrder=()=>{
+  dispatch(addToCart({...product,selectQuantity:1}))
+  navigate('/cart')
+ }
 if(isLoading){
   return <Loading/>
 }
@@ -90,22 +97,19 @@ if(isLoading){
               product?.inStock &&  <div className="mt-6 flex flex-col sm:flex-row gap-4">
               {/* Add to Cart Button */}
               <button
-                className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-semibold ${
-                  product.availability === "Out of Stock"
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-primary-red hover:bg-red-700"
-                } transition-all`}
-                disabled={product.availability === "Out of Stock"}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-semibold bg-primary-red hover:bg-red-700 transition-all`}
+                // disabled={product.inStock}
+                onClick={()=> dispatch(addToCart({...product,selectQuantity:1}))}
               >
                 <BiCart className="text-xl hover:scale-[1.05]" /> Add to Cart
               </button>
 
               {/* Go Back Button */}
-              <Link to="/cart">
-                <button className="px-4 py-2 border bg-gray-900 text-white  rounded-md font-semibold hover:scale-[1.05] hover:text-white duration-300 transition">
+
+                <button onClick={handleOrder} className="px-4 py-2 border bg-gray-900 text-white  rounded-md font-semibold hover:scale-[1.05] hover:text-white duration-300 transition">
                   Order
                 </button>
-              </Link>
+
             </div>
             }
            

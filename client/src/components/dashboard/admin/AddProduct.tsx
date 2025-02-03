@@ -36,7 +36,7 @@ import { useCreateProductMutation } from "@/redux/features/products/productApi";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
-  image: z.string().min(1, "Image is required."),
+  image:z.string().optional(),
   description: z.string().min(1, "Description is required."),
   brand: z.string().min(1, "Brand is required."),
   price: z.number().min(1, "Price cannot be  0."),
@@ -55,7 +55,7 @@ const AddProduct = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      image: "",
+      image:"",
       description: "",
       brand: "",
       price: 0,
@@ -66,13 +66,41 @@ const AddProduct = () => {
   });
 
   const { reset } = form;
+  // image upload to coudinary start
+  const [image, setImage] = useState<File | null>(null);
+
+  const handleImageChange = (file: File) => {
+    setImage(file);
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Adding Product...");
 
     try {
-      console.log("Product Data:", data);
-      const res = await addProduct(data);
+      // image upload start
+      if (!image) return toast.error("Please select an image first!",{id:toastId});
+
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "bikeStore"); // Replace with your Cloudinary preset
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dlyvk0pgr/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+           
+      const result = await response.json();
+      console.log(result,response,"asdfdfff") // ✅ Parse the response correctly
+      const imageUrl = result.secure_url;
+      const productData = {
+        ...data,
+        image: imageUrl,
+      };
+      // image upload end
+      const res = await addProduct(productData);
       console.log(res, "trest");
       if (res?.data) {
         toast.success("Product added successfully!", { id: toastId });
@@ -115,12 +143,27 @@ const AddProduct = () => {
             />
 
             {/* Image */}
-            <CustomInputField
-              name="image"
-              label="Product Image Link"
-              placeholder="Enter image Link.."
-              type="text"
+            <FormField
               control={form.control}
+              name="image"
+              render={({ fieldState: { error } }) => (
+                <FormItem>
+                  <FormLabel>Product Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          handleImageChange(file); // Store the selected file in state
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  {error && <p className="text-red-500">{error.message}</p>}
+                </FormItem>
+              )}
             />
 
             {/* Description */}

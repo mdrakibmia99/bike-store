@@ -92,7 +92,7 @@ const CartPage = () => {
           </div> */}
           <div className="flex justify-between font-bold text-lg mb-4">
             <span className="text-xl">Total Price:</span>
-            <span  className="text-2xl">${cartData?.totalPrice}</span>
+            <span  className="text-2xl">Tk.{cartData?.totalPrice}</span>
           </div>
           <Button className="w-full text-white bg-primary-red">Checkout</Button>
         </div>

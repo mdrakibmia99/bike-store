@@ -8,7 +8,7 @@ const orderSchema = new Schema<IOrder>(
       ref: 'User',
       // required: [true, 'User reference is required'],
     },
-    product: [
+    products: [
       {
         product: {
           type: Schema.Types.ObjectId,

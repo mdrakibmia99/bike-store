@@ -20,6 +20,7 @@ const getBikes = async (query: Record<string, unknown>) => {
 
     const result = await bikeQuery.modelQuery;
     const meta = await bikeQuery.countTotal();
+    console.log(result,meta,"test")
     return {
       meta,
       result,

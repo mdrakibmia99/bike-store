@@ -4,6 +4,8 @@ import { BiCart } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
 import { useAllProductsQuery } from "@/redux/features/products/productApi";
 import Loading from "../Loading";
+import { addToCart } from "@/redux/features/cart/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 // const products = [
 //   {
@@ -50,6 +52,7 @@ import Loading from "../Loading";
 
 const NewProducts = () => {
   const {data,isLoading,isError}= useAllProductsQuery(undefined)
+  const dispatch= useAppDispatch()
   console.log(isError,"all products")
   if(isLoading){
     return <Loading/>
@@ -102,6 +105,7 @@ const NewProducts = () => {
                     : "bg-primary-red hover:bg-red-700"
                 } transition-all`}
                 disabled={!product?.inStock}
+                onClick={()=> dispatch(addToCart({...product,selectQuantity:1}))}
               >
                 <BiCart className="text-white text-lg" />
               </button>

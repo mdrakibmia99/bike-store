@@ -20,7 +20,9 @@ import AdminProducts from "@/pages/Dashboard/admin/AdminProducts";
 import ProfileUpdate from "@/pages/Dashboard/ProfileUpdate";
 import { AllUsers } from "@/pages/Dashboard/admin/AllUsers";
 import PrivetUserRoute from "@/utils/PrivetUserRoute";
-import OrderPage from "@/pages/OrderPage";
+import OrderPage from "@/pages/Order/OrderPage";
+import OrderResponse from "@/pages/Order/OrderResponse";
+import OrderAdmin from "@/pages/Dashboard/admin/OrderAdmin";
 
 
 
@@ -58,6 +60,10 @@ export const router = createBrowserRouter([
         element: <PrivetUserRoute><OrderPage/></PrivetUserRoute> ,
       },
       {
+        path: "/response",
+        element: <PrivetUserRoute><OrderResponse/></PrivetUserRoute> ,
+      },
+      {
         path: "/details/:id",
         element: <ProductDetails />,
       },
@@ -84,7 +90,7 @@ export const router = createBrowserRouter([
     },
     {
       path: "/admin/dashboard/orders",
-      element: <div>Admin dashboard order</div>,
+      element: <OrderAdmin/>,
     },
     {
       path: "/admin/dashboard/customer",
@@ -101,9 +107,19 @@ export const router = createBrowserRouter([
   element: <DashboardProtected role="customer"><DashboardLayout/></DashboardProtected>,
   children:[
     {
+      path: "/user/dashboard/viewOrders",
+      element: <p>user dashboard</p>,
+    },
+    {
+      path: "/user/dashboard/profile-setting",
+      element: < ProfileUpdate/>,
+    },
+    {
       path: "/user/dashboard/orders/all",
       element: < ProductCreate/>,
-    }]
+    }
+  
+  ]
   },
   {
     path:'/login',

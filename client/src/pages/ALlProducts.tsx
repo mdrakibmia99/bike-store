@@ -10,7 +10,7 @@ import { addToCart } from "@/redux/features/cart/cartSlice";
 
 
 export default function ALlProducts() {
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const {data,isLoading}= useAllProductsQuery(undefined)
   const dispatch= useAppDispatch()
   const [filters, setFilters] = useState({
@@ -20,40 +20,38 @@ export default function ALlProducts() {
     availability: "",
   });
 
-  const handleSearch = (e:FieldValues) => {
-    setSearchTerm(e.target.value.toLowerCase());
-  };
+  // const handleSearch = (e:FieldValues) => {
+  //   // setSearchTerm(e.target.value.toLowerCase());
+    
+  // };
 
   const handleFilterChange = (e:FieldValues) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
 
-  const filteredProducts = data?.data?.filter((product) => {
-    const matchesSearchTerm =
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.brand.toLowerCase().includes(searchTerm) ||
-      product.category.toLowerCase().includes(searchTerm);
+  // const filteredProducts = data?.data?.filter((product) => {
+  //   const matchesSearchTerm =
+  //     product.name.toLowerCase().includes(searchTerm) ||
+  //     product.brand.toLowerCase().includes(searchTerm) ||
+  //     product.category.toLowerCase().includes(searchTerm);
 
-    const matchesBrand = filters.brand ? product.brand === filters.brand : true;
-    const matchesCategory =
-      filters.category ? product.category === filters.category : true;
-    const matchesPrice =
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1];
-    const matchesAvailability =
-      filters.availability
-        ? product?.availability === filters.availability
-        : true;
+  //   const matchesBrand = filters.brand ? product.brand === filters.brand : true;
+  //   const matchesCategory =
+  //     filters.category ? product.category === filters.category : true;
+  //   const matchesPrice =
+  //     product.price >= filters.priceRange[0] &&
+  //     product.price <= filters.priceRange[1];
 
-    return (
-      matchesSearchTerm &&
-      matchesBrand &&
-      matchesCategory &&
-      matchesPrice &&
-      matchesAvailability
-    );
-  });
+
+
+  //   return (
+  //     matchesSearchTerm &&
+  //     matchesBrand &&
+  //     matchesCategory &&
+  //     matchesPrice 
+  //   );
+  // });
   if(isLoading){
     return <Loading/>
   }
@@ -70,7 +68,7 @@ export default function ALlProducts() {
             type="text"
             placeholder="Search by brand, name, or category"
             className="p-2 border border-gray-300 rounded-md flex-1"
-            onChange={handleSearch}
+            // onChange={handleSearch}
           />
 
           {/* Filters */}
@@ -167,11 +165,11 @@ export default function ALlProducts() {
       ))}
     </div>
 
-        {filteredProducts?.length === 0 && (
+        {/* {filteredProducts?.length === 0 && (
           <div className="text-center mt-8 text-gray-500">
             No products match your search or filter criteria.
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

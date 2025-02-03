@@ -32,12 +32,13 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action: PayloadAction<ICartItem>) {
-      console.log({ state: state.items });
+      
+      console.log({ state: action });
       const existingItem = state.items.find(
         (item) => item._id === action.payload._id
       );
       if (existingItem) {
-        toast.warning("Already added just increment quantity",toastId)
+        toast.success("Already added just increment quantity",toastId)
         existingItem.selectQuantity += action.payload.selectQuantity;
       } else {
         state.items.push(action.payload);

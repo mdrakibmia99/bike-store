@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useAllProductsQuery } from "@/redux/features/products/productApi";
-import Loading from "@/components/Loading";
 import { BiCart } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/features/cart/cartSlice";
+import LoadingSkelton from "@/components/shared/LoadingSkelton";
 
 
 export default function ALlProducts() {
@@ -53,7 +53,7 @@ export default function ALlProducts() {
   //   );
   // });
   if(isLoading){
-    return <Loading/>
+    return <LoadingSkelton/>
   }
 
   return (

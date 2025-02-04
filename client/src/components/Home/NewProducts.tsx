@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { BiCart } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
 import { useAllProductsQuery } from "@/redux/features/products/productApi";
-import Loading from "../Loading";
 import { addToCart } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import LoadingSkelton from "../shared/LoadingSkelton";
 
 // const products = [
 //   {
@@ -51,15 +51,17 @@ import { useAppDispatch } from "@/redux/hooks";
 // ];
 
 const NewProducts = () => {
-  const {data,isLoading,isError}= useAllProductsQuery(undefined)
-  const dispatch= useAppDispatch()
-  console.log(isError,"all products")
-  if(isLoading){
-    return <Loading/>
+  const { data, isLoading, isError } = useAllProductsQuery(undefined);
+  const dispatch = useAppDispatch();
+  console.log(isError, "all products");
+  if (isLoading) {
+    return (
+     <LoadingSkelton/>
+    );
   }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {data?.data?.slice(0,8)?.map((product) => (
+      {data?.data?.slice(0, 8)?.map((product) => (
         <div
           key={product?._id}
           className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-all p-4 border border-gray-200"
@@ -78,7 +80,7 @@ const NewProducts = () => {
                   : "bg-red-600 text-white"
               }`}
             >
-              {product.inStock? 'In Stock':'Out of Stock'}
+              {product.inStock ? "In Stock" : "Out of Stock"}
             </Badge>
           </div>
 
@@ -86,7 +88,10 @@ const NewProducts = () => {
             <h2 className="text-lg font-bold mb-1">{product.name}</h2>
             <p className="text-sm text-gray-600 my-3">Model: {product.model}</p>
             <p className="text-lg font-medium text-gray-800">
-              Price: <span className="font-bold text-primary-red">{product.price} tk</span>
+              Price:{" "}
+              <span className="font-bold text-primary-red">
+                {product.price} tk
+              </span>
             </p>
 
             <div className="mt-3 flex gap-2">
@@ -105,7 +110,9 @@ const NewProducts = () => {
                     : "bg-primary-red hover:bg-red-700"
                 } transition-all`}
                 disabled={!product?.inStock}
-                onClick={()=> dispatch(addToCart({...product,selectQuantity:1}))}
+                onClick={() =>
+                  dispatch(addToCart({ ...product, selectQuantity: 1 }))
+                }
               >
                 <BiCart className="text-white text-lg" />
               </button>

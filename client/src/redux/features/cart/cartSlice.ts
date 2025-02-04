@@ -38,8 +38,8 @@ const cartSlice = createSlice({
         (item) => item._id === action.payload._id
       );
       if (existingItem) {
-        toast.success("Already added just increment quantity",toastId)
-        existingItem.selectQuantity += action.payload.selectQuantity;
+        toast.warning("Already added",toastId)
+        // existingItem.selectQuantity += action.payload.selectQuantity;
       } else {
         state.items.push(action.payload);
         toast.success("Added to cart successfully",toastId);

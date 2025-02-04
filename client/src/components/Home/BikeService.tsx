@@ -45,7 +45,7 @@ const BikeService = () => {
             </div>
           </div>
         </div>
-        <button onClick={()=> navigate('/bikes')} className="mt-6 p-2 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition-all">
+        <button onClick={()=> navigate('/bikes')} className="mt-6 p-2 bg-red-500 text-white  rounded-lg hover:bg-red-600 transition-all">
           SHOP NOW
         </button>
       </div>

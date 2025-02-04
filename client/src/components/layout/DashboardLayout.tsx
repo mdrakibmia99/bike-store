@@ -6,6 +6,8 @@ import { useLogOutMutation } from "@/redux/features/auth/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
 import { CiHome } from "react-icons/ci";
+import { Button } from "../ui/button";
+
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -68,9 +70,9 @@ export default function DashboardLayout() {
           <h1 className="text-xl font-semibold">Dashboard</h1>
 
           {/* Logout Button */}
-          <button onClick={handleLogOut} className="text-gray-700 font-medium pr-10">
+          <Button onClick={handleLogOut} className=" font-medium ">
             Logout
-          </button>
+          </Button>
         </div>
           
         {/* ✅ Scrollable Content */}

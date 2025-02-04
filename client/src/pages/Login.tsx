@@ -27,7 +27,7 @@ const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(3, { message: "Password must be at least 6 characters long" })
+    .min(1, { message: "Password must be at least 1 characters long" })
     .regex(/[a-zA-Z0-9]/, { message: "Password must be alphanumeric" }),
 });
 
@@ -42,8 +42,8 @@ export default function LoginPreview() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "customer@gmail.com",
-      password: "customer",
+      email: "",
+      password: "",
     },
   });
 

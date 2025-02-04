@@ -66,8 +66,8 @@ const NewProducts = () => {
         >
           <div className="relative">
             <img
-              src={product.image}
-              alt={product.name}
+              src={product?.image}
+              alt={product?.name}
               className="w-full h-56 object-cover rounded-md hover:scale-[1.05] transition-all duration-300 cursor-pointer"
             />
             {/* Stock Badge */}

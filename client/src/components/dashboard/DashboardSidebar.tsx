@@ -42,11 +42,7 @@ const adminMenuItems = [
       path: "/admin/dashboard/profile-setting",
       icon: <IoMdSettings className="w-7 h-7" />,
     },
-    {
-      name: " Profile Settings",
-      path: "/admin/dashboard/profile-setting",
-      icon: <IoMdSettings className="w-7 h-7" />,
-    },
+
   ];
   const customerMenuItems = [
     {
@@ -93,7 +89,7 @@ const DashboardSidebar = () => {
               }`}
             >
               {item?.icon}
-              {item.name}
+              {item?.name}
             </Link>
 
             

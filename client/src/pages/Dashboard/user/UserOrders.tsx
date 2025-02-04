@@ -58,7 +58,7 @@ const UserOrders = () => {
                 <td className="px-6 py-4">
                   {item?.products.map((product, index) => (
                     <div key={index} className="flex gap-2 justify-between">
-                      <p>{product?.product.name}</p>
+                      <p>{product?.product?.name}</p>
                       <p>| {product?.product?.brand}</p>
                       <p>| {product?.product?.category}</p>
                       <p className="text-red-500">

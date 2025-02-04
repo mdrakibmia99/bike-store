@@ -5,6 +5,7 @@ import {
   useVerifyOrderMutation,
 } from "@/redux/features/order/orderApi";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const OrderAdmin = () => {
   const { data, isLoading } = useAllOrdersQuery(undefined);
@@ -16,6 +17,15 @@ const OrderAdmin = () => {
     item._id.toLowerCase().includes(search.toLowerCase())
   );
   const dataLength = filteredData?.length;
+  const handleVerify=async(orderId:string)=>{
+   const toastId= toast.loading("verifying...")
+    const res=  await verifyOrder({ order_id: orderId })
+    if(res?.data){
+     toast.success("Order verified successfully.", { id: toastId })
+    }else{
+      toast.error("Failed to verify order.", { id: toastId })
+    }
+  }
   if (isLoading) return <Loading />;
   console.log(data, "all order");
   return (
@@ -63,7 +73,7 @@ const OrderAdmin = () => {
                 <td className="px-6 py-4">
                   {item?.products.map((product,index) => (
                     <div key={index} className="flex gap-2 justify-between">
-                      <p>{product?.product.name}</p>
+                      <p>{product?.product?.name}</p>
                       <p>| {product?.product?.brand}</p>
                       <p>| {product?.product?.category}</p>
                       <p className="text-red-500">
@@ -78,7 +88,7 @@ const OrderAdmin = () => {
                   {item?.status.toLowerCase() === "pending" ? (
                     <Button
                       onClick={() =>
-                        verifyOrder({ order_id: item.transaction.id })
+                       handleVerify(item?.transaction?.id)
                       }
                     >
                       Verify Order

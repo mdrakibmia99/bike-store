@@ -37,7 +37,7 @@ const orderApi = baseApi.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ["product","revenue"],
+      invalidatesTags: ["order","product","revenue"],
     }),
     verifyOrder: builder.mutation({
         query: (data) => (console.log(data,"check"),

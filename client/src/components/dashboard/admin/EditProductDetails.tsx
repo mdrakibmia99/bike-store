@@ -30,9 +30,13 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useDeleteProductMutation, useUpdateProductMutation } from "@/redux/features/products/productApi";
+import {
+  useDeleteProductMutation,
+  useUpdateProductMutation,
+} from "@/redux/features/products/productApi";
 import { IBikeResponse } from "@/types/types";
 import CustomInputField from "@/components/custom-input/CustomInputField";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 // Define validation schema using zod
 const formSchema = z.object({
@@ -50,7 +54,7 @@ const formSchema = z.object({
 
 const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
   const [updateProduct] = useUpdateProductMutation();
-  const [deleteProduct]=useDeleteProductMutation()
+  const [deleteProduct] = useDeleteProductMutation();
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -68,6 +72,10 @@ const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
   });
 
   const { reset } = form;
+  const [image, setImage] = useState<File | null>(null);
+  const handleImageChange = (file: File) => {
+    setImage(file);
+  };
 
   useEffect(() => {
     reset({
@@ -85,7 +93,27 @@ const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Updating product...");
     try {
-      const res = await updateProduct({data, id: product._id });
+      let imageUrl =data?.image;
+      if (image) {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "bikeStore");
+  
+        try {
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dlyvk0pgr/image/upload",
+            { method: "POST", body: formData }
+          );
+          const result = await response.json();
+          if (!result.secure_url) throw new Error("Image upload failed");
+          imageUrl = result.secure_url;
+        } catch (error) {
+          toast.error("Failed to upload image");
+          return;
+        }
+      }
+      const updateData={...data,image:imageUrl}
+      const res = await updateProduct({ data:updateData, id: product._id });
 
       if ("error" in res) {
         toast.error("Something went wrong", { id: toastId });
@@ -99,19 +127,18 @@ const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
     }
   };
   const handleDeleteProduct = async (id: string) => {
-    const toastId = toast.loading("Deleting...")
+    const toastId = toast.loading("Deleting...");
     try {
-        const res = await deleteProduct(id)
-        if(res?.error){
-            toast.error("Something went wrong...", {id: toastId})
-        }else{
-            toast.success("Deleted Product...", {id: toastId})
-        }
-
+      const res = await deleteProduct(id);
+      if (res?.error) {
+        toast.error("Something went wrong...", { id: toastId });
+      } else {
+        toast.success("Deleted Product...", { id: toastId });
+      }
     } catch (error) {
-        toast.error("Delete Failed...", {id: toastId})
+      toast.error("Delete Failed...", { id: toastId });
     }
-}
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -136,12 +163,25 @@ const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
                 control={form.control}
               />
 
-              <CustomInputField
+              {/* <CustomInputField
                 name="image"
                 label="Product Image Link"
                 placeholder="Enter image link"
                 type="text"
                 control={form.control}
+              /> */}
+              {/* image upload  */}
+              <Label className="mt-2">Product Image</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleImageChange(file);
+                  }
+                }}
+                
               />
 
               <FormField
@@ -269,7 +309,10 @@ const EditProductDetails = ({ product }: { product: IBikeResponse }) => {
           </Form>
         </DialogContent>
       </Dialog>
-      <FaTrash onClick={()=>handleDeleteProduct(product._id)} className="text-red-600  cursor-pointer  mx-auto hover:scale-[1.15] w-4 h-4" />
+      <FaTrash
+        onClick={() => handleDeleteProduct(product._id)}
+        className="text-red-600  cursor-pointer  mx-auto hover:scale-[1.15] w-4 h-4"
+      />
     </div>
   );
 };

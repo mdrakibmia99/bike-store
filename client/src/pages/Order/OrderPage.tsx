@@ -185,6 +185,10 @@ const OrderPage = () => {
               </Button>
             )}
           </div>
+           <div className="w-full text-center mt-3">
+            <h4 className="text-center w-full text-red-800 text-lg font-bold">!!Warning!!</h4>
+            <p>এডমিন order ভেরিফাই করার পর প্রডাক্ট কোয়ান্টিটি কমবে</p>
+           </div>
         </div>
       </div>
     </div>

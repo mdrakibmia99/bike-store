@@ -6,6 +6,7 @@ import { useSpecificProductsQuery } from "@/redux/features/products/productApi";
 import Loading from "@/components/Loading";
 import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/features/cart/cartSlice";
+import { Button } from "@/components/ui/button";
 
 // const products = [
 //   {
@@ -80,10 +81,10 @@ if(isLoading){
           {/* Right Side - Details */}
           <div className="p-6 flex flex-col justify-center">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{product.name}</h1>
-            <p className="text-gray-500 text-sm md:text-base mb-2">{product.category} Bike | Model: {product.model}</p>
-
+            <p className="text-gray-500 py-2 text-sm md:text-base mb-2">{product.category} Bike | Model: {product.model}</p>
+            <Button className="flex w-[120px] text-xl bg-green-500 hover:bg-green-500 cursor-default">Quantity: <span className="text-xl">{product?.quantity}</span> </Button>
             <p className="text-lg font-medium text-gray-600 mt-2">
-              <span className="font-semibold">Brand:</span> {product.brand}
+              <span className="font-semibold">Brand:</span> {product?.brand}
             </p>
             <p className="text-lg font-medium text-gray-600">
               <span className="font-semibold">Price:</span>{" "}

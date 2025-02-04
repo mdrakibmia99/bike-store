@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,12 +12,12 @@ import {
 } from "@/redux/features/auth/authApi";
 import { toast } from "sonner";
 
-
 const ProfileUpdate = () => {
   const { isLoading, data: user } = useAuthMeQuery(undefined);
   const [updateProfile] = useUpdateProfileMutation();
   const [updatePassword] = useUpdatePasswordMutation();
-  
+  const [image, setImage] = useState<File | null>(null);
+
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -51,16 +52,37 @@ const ProfileUpdate = () => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (file: File) => {
+    setImage(file);
+  };
+
   const handleUpdateProfile = async () => {
-    if (
-      !profile.name.trim() ||
-      !profile.phone.trim() ||
-      !profile.profileImage.trim()
-    ) {
+    if (!profile.name.trim() || !profile.phone.trim()) {
       return toast.error("Fields cannot be empty!");
     }
     const toastId = toast.loading("Updating profile...");
-    const res = await updateProfile(profile);
+    let imageUrl = profile.profileImage;
+
+    if (image) {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "bikeStore");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dlyvk0pgr/image/upload",
+          { method: "POST", body: formData }
+        );
+        const result = await response.json();
+        if (!result.secure_url) throw new Error("Image upload failed");
+        imageUrl = result.secure_url;
+      } catch (error) {
+        toast.error("Failed to upload image");
+        return;
+      }
+    }
+
+    const res = await updateProfile({ ...profile, profileImage: imageUrl });
     if (res?.data?.success) {
       toast.success("Profile updated successfully", { id: toastId });
       setIsEditingProfile(false);
@@ -87,12 +109,12 @@ const ProfileUpdate = () => {
     const res = await updatePassword(passwords);
     if (res?.data?.success) {
       toast.success("Password updated successfully", { id: toastId });
-      setIsEditingProfile(false);
-    }else if(res?.error){
-      toast.error( "Old Password is not correct!!", { id: toastId });
+      setIsEditingPassword(false);
+      setPasswords({ oldPassword: "", newPassword: "" });
+    } else if (res?.error) {
+      toast.error("Old Password is incorrect!", { id: toastId });
     } else {
-      console.log(res,"res")
-      toast.error( "Failed to update password", { id: toastId });
+      toast.error("Failed to update password", { id: toastId });
     }
   };
 
@@ -100,11 +122,11 @@ const ProfileUpdate = () => {
     setPasswords({ oldPassword: "", newPassword: "" });
     setIsEditingPassword(false);
   };
-  console.log(user,"user data")
+
   if (isLoading) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
-
+console.log(user,"user")
   return (
     <div className="max-w-lg mx-auto p-6">
       {/* Profile Section */}
@@ -131,7 +153,7 @@ const ProfileUpdate = () => {
           />
 
           <Label className="mt-2">Email</Label>
-          <Input name="email"  value={profile.email} disabled={true} />
+          <Input name="email" value={profile.email} disabled={true} />
 
           <Label className="mt-2">Phone</Label>
           <Input
@@ -141,11 +163,16 @@ const ProfileUpdate = () => {
             disabled={!isEditingProfile}
           />
 
-          <Label className="mt-2">Profile Image URL</Label>
+          <Label className="mt-2">Profile Image</Label>
           <Input
-            name="profileImage"
-            value={profile.profileImage}
-            onChange={handleInputChange}
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                handleImageChange(file);
+              }
+            }}
             disabled={!isEditingProfile}
           />
 

@@ -72,7 +72,7 @@ export default function DashboardLayout() {
         </div>
 
         {/* ✅ Scrollable Content */}
-        <div className="flex-1 bg-gray-50 overflow-auto p-4 mt-16">
+        <div className="flex-1 bg-gray-50 overflow-auto p-4">
           <Outlet />
         </div>
       </div>

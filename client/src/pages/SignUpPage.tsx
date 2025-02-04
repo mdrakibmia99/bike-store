@@ -11,6 +11,7 @@ import CustomInputField from "@/components/custom-input/CustomInputField";
 import BackHome from "@/components/shared/navbar/BackHome";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useSignUpMutation } from "@/redux/features/auth/authApi";
 
 // Validation schema
 const formSchema = z.object({
@@ -27,6 +28,7 @@ const formSchema = z.object({
 export default function SignUpPage() {
   const navigate = useNavigate();
   const token = useAppSelector(selectCurrentUser);
+  const [signUp] = useSignUpMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,14 +41,21 @@ export default function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      const toastId = toast.loading("Registration...");
       // Simulate form submission
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-      form.reset();
+      const res = await signUp(values);
+      if (res?.data?.success) {
+        form.reset();
+        toast.success("Registration successful! Please login to continue.", {
+          id: toastId,
+        });
+        navigate("/login");
+      } else if ((res as {error:{status:number}})?.error.status ==409 ) {
+        // console.log((res as {error:{status:number}})?.error.status );
+        toast.error("Already Exist This User!", { id: toastId });
+      } else {
+        toast.error("something went wrong!!", { id: toastId });
+      }
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");

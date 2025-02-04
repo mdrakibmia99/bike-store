@@ -11,7 +11,7 @@ const app: Application = express();
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({ origin: ['http://localhost:5173','https://quiz-app-rkrakib.vercel.app'],credentials: true }));
+app.use(cors({ origin: ['http://localhost:5173','https://bike-store-4sz8.vercel.app'],credentials: true }));
 
 // application router
 // all route

@@ -5,11 +5,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useLogOutMutation } from "@/redux/features/auth/authApi";
-import { logout, selectCurrentToken } from "@/redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
+import {  selectCurrentToken } from "@/redux/features/auth/authSlice";
+import {  useAppSelector } from "@/redux/hooks";
 import { Menu, Sheet } from "lucide-react";
-import { toast } from "sonner";
 import { menuList } from "./navbarData";
 import { Link } from "react-router-dom";
 import { verifyToken } from "@/utils/verifyToken";
@@ -18,8 +17,7 @@ import { TUser } from "@/types/types";
 
 const SmallDeviceNavSidebar = () => {
   const token = useAppSelector(selectCurrentToken);
-  const dispatch = useAppDispatch();
-  const [logOut] = useLogOutMutation();
+
 
   let isUser;
   if (token) {

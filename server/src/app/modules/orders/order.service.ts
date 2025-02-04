@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Types } from 'mongoose';
 import QueryBuilder from '../../builder/queryBuilder';
 import AppError from '../../errors/AppError';
 import { TTokenResponse } from '../Auth/auth.interface';
@@ -6,7 +7,7 @@ import Bike from '../bikes/bike.model';
 import User from '../user/user.model';
 import Order from './order.model';
 import { orderUtils } from './order.utils';
-
+import { StatusCodes } from 'http-status-codes';
 
 // create this service for create a order
 const createOrder = async (
@@ -107,7 +108,7 @@ const getOrders = async (
   }
 
   const orderQuery = new QueryBuilder(
-    Order.find({user:user.userId}).populate('user products.product'),
+    Order.find({ user: user.userId }).populate('user products.product'),
     query,
   )
     .search(searchableFields)
@@ -123,10 +124,52 @@ const getOrders = async (
     result,
   };
 };
-// verify payme service 
+// verify payme service
 const verifyPayment = async (order_id: string) => {
   const verifiedPayment = await orderUtils.verifyPaymentAsync(order_id);
+  if (verifiedPayment[0]?.customer_order_id) {
+    const findOrder = await Order.findById(
+      verifiedPayment[0]?.customer_order_id,
+    );
+    for (const item of findOrder?.products as {
+      product: Types.ObjectId;
+      quantity: number;
+    }[]) {
+      const bike = await Bike.findById(item.product);
+      if (!bike || bike.quantity < item.quantity) {
+        throw new AppError(StatusCodes.CONFLICT,`Not enough stock for ${bike?.name}`);
+      }
 
+      bike.quantity -= item.quantity;
+      if (bike.quantity === 0) {
+        bike.inStock = false;
+      }
+
+      await bike.save();
+    }
+
+    //  try {
+    //   const updatePromises = findOrder?.products.map(async ({ product, quantity }) => {
+    //     const bike = await Bike.findById(product);
+
+    //     if (!bike) {
+    //       throw new Error(`Bike with ID ${product} not found`);
+    //     }
+
+    //     if (bike.quantity < quantity) {
+    //       throw new Error(`Not enough stock for bike: ${bike.name}`);
+    //     }
+
+    //     bike.quantity -= quantity;
+    //     await bike.save();
+    //   });
+
+    //   await Promise.all(updatePromises);
+    //   return { success: true, message: "Stock updated successfully" };
+    // } catch (error) {
+    //   throw new Error(error.message);
+    // }
+  }
   if (verifiedPayment.length) {
      const res= await Order.findOneAndUpdate(
           {
@@ -184,5 +227,5 @@ export const orderService = {
   createOrder,
   getTotalRevenue,
   getOrders,
-  verifyPayment
+  verifyPayment,
 };

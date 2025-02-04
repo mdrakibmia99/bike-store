@@ -71,17 +71,7 @@ export default function ALlProducts() {
             // onChange={handleSearch}
           />
 
-          {/* Filters */}
-          <select
-            name="brand"
-            className="p-2 border border-gray-300 rounded-md"
-            onChange={handleFilterChange}
-          >
-            <option value="">All Brands</option>
-            <option value="Brand A">Brand A</option>
-            <option value="Brand B">Brand B</option>
-            <option value="Brand C">Brand C</option>
-          </select>
+     
 
           <select
             name="category"

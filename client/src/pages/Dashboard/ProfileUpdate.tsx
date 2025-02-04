@@ -135,7 +135,7 @@ const ProfileUpdate = () => {
   }
 
   return (
-    <div className="max-w-lg mx-auto p-6">
+    <div className="max-w-lg h-auto mb-5 overflow-y-auto mx-auto p-6">
       {/* Profile Section */}
       <Card>
         <CardHeader className="flex items-center gap-4">

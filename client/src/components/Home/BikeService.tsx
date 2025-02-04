@@ -1,6 +1,8 @@
 import bikeImage from "@/assets/images/bike-image-red.jpg";
+import { useNavigate } from "react-router-dom";
 
 const BikeService = () => {
+  const navigate=useNavigate()
   return (<div className="pb-16 mt-12 ">
         <h2 className="text-3xl md:text-5xl text-center mt-8 font-bold text-gray-900 mb-8">Bike Services & Repair</h2>
     <div className="container mx-auto px-4  grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
@@ -43,7 +45,7 @@ const BikeService = () => {
             </div>
           </div>
         </div>
-        <button className="mt-6 px-6 py-3 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition-all">
+        <button onClick={()=> navigate('/bikes')} className="mt-6 p-2 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition-all">
           SHOP NOW
         </button>
       </div>

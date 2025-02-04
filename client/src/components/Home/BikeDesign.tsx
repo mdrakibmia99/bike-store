@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function BikeDesign() {
+  const navigate=useNavigate()
   return (
     <section className="container mx-auto bg-black text-white py-12 px-6 md:px-12 lg:px-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -48,7 +50,7 @@ export default function BikeDesign() {
             A SHOW-STOPPING Yamaha GTS 1000 from Italy, a neo-retro Yamaha XT250 from Australia, and a very slick
             body kit for the BMW R nineT from France.
           </p>
-          <Button variant="outline" className="mt-4 border-white text-white px-6 py-2">
+          <Button onClick={()=>navigate('/bikes')} className="mt-4  px-6 py-2">
             See More
           </Button>
         </div>

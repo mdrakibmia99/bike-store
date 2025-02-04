@@ -17,6 +17,7 @@ import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
 import { TUser } from "@/types/types";
 
+
 const menuList = [
   { id: 1, name: "HOME", link: "/" },
   { id: 2, name: "All PRODUCTS", link: "/bikes" },
@@ -27,6 +28,7 @@ const menuList = [
 
 const Navbar = () => {
   const token = useAppSelector(selectCurrentToken);
+
   const cartData = useAppSelector((state) => state.cart);
   const location = useLocation();
 

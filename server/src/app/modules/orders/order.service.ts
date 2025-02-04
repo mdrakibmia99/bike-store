@@ -107,7 +107,7 @@ const getOrders = async (
   }
 
   const orderQuery = new QueryBuilder(
-    Order.find(),
+    Order.find({user:user.userId}).populate('user products.product'),
     query,
   )
     .search(searchableFields)

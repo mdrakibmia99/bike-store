@@ -23,6 +23,9 @@ import PrivetUserRoute from "@/utils/PrivetUserRoute";
 import OrderPage from "@/pages/Order/OrderPage";
 import OrderResponse from "@/pages/Order/OrderResponse";
 import OrderAdmin from "@/pages/Dashboard/admin/OrderAdmin";
+import UserOrders from "@/pages/Dashboard/user/UserOrders";
+import UserDashboardIndex from "@/pages/Dashboard/user/UserDashboardIndex";
+
 
 
 
@@ -107,8 +110,12 @@ export const router = createBrowserRouter([
   element: <DashboardProtected role="customer"><DashboardLayout/></DashboardProtected>,
   children:[
     {
+      path: "/user/dashboard",
+      element: <UserDashboardIndex/>,
+    },
+    {
       path: "/user/dashboard/viewOrders",
-      element: <p>user dashboard</p>,
+      element: <UserOrders/>,
     },
     {
       path: "/user/dashboard/profile-setting",

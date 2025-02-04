@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { useLogOutMutation } from "@/redux/features/auth/authApi";
+import { useAuthMeQuery, useLogOutMutation } from "@/redux/features/auth/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
@@ -15,18 +15,20 @@ import { Button } from "@/components/ui/button";
 
 export function ProfileDropdown({ user }: { user: TUser }) {
   const dispatch = useAppDispatch();
+    const {  data } = useAuthMeQuery(undefined);
   const [logOut] = useLogOutMutation();
   const handleLogOut = async () => {
     dispatch(logout());
     toast.success("logout!");
     await logOut({});
   };
+  console.log(data,"update")
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar className="cursor-pointer">
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={data?.data?.profileImage ||  "https://github.com/shadcn.png"}
             alt="profile image"
           />
           <AvatarFallback>Profile</AvatarFallback>

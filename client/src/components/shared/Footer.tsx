@@ -13,9 +13,9 @@ export default function Footer() {
               our customers. Visit us for the best riding experience.
             </p>
             <div className="mt-4 flex space-x-4 text-gray-400">
-              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaFacebookF className="w-7 h-7" /></a>
-              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaWhatsapp className="w-7 h-7" /></a>
-              <a href="#" target="_blank" className="hover:text-primary-red duration-300"> <FaLinkedinIn className="w-7 h-7" /></a>
+              <a href="https://www.facebook.com/devrakibmia" target="_blank" className="hover:text-primary-red duration-300"> <FaFacebookF className="w-7 h-7" /></a>
+              <a href="https://wa.me/+8801913547448" target="_blank" className="hover:text-primary-red duration-300"> <FaWhatsapp className="w-7 h-7" /></a>
+              <a href="https://www.linkedin.com/in/md-rakib-mia" target="_blank" className="hover:text-primary-red duration-300"> <FaLinkedinIn className="w-7 h-7" /></a>
             </div>
           </div>
 
@@ -23,10 +23,10 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Shop</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white">Mountain Bikes</a></li>
-              <li><a href="#" className="hover:text-white">Road Bikes</a></li>
-              <li><a href="#" className="hover:text-white">Electric Bikes</a></li>
-              <li><a href="#" className="hover:text-white">Accessories</a></li>
+              <li className="hover:text-white">Mountain Bikes</li>
+              <li className="hover:text-white">Road Bikes</li>
+              <li className="hover:text-white">Electric Bikes</li>
+              <li className="hover:text-white">Accessories</li>
             </ul>
           </div>
 
@@ -34,9 +34,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white">Contact Us</a></li>
-              <li><a href="#" className="hover:text-white">Returns</a></li>
-              <li><a href="#" className="hover:text-white">Shipping Info</a></li>
+              <li><a href="/contact" className="hover:text-white">Contact Us</a></li>
               <li><Link to="/faqs" className="hover:text-white">FAQs</Link></li>
             </ul>
           </div>

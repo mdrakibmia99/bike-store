@@ -1,10 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import DashboardSidebar from "../dashboard/DashboardSidebar";
 import { useAppDispatch } from "@/redux/hooks";
 import { useLogOutMutation } from "@/redux/features/auth/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
+import { CiHome } from "react-icons/ci";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,14 +19,15 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className=" md:flex h-screen w-full  overflow-hidden">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 bg-gray-800 text-white transition-all duration-300 overflow-y-auto 
           ${isSidebarOpen ? "w-64" : "w-0"} md:w-64 md:relative`}
       >
-        <div className="p-4 text-lg font-semibold border-b border-gray-700">
-          ROYAL KNIGHT
+        <div className="p-4  text-lg font-semibold border-b border-gray-700">
+        <Link to="/" className="flex  justify-center items-center gap-3"> <span>ROYAL KNIGHT</span>
+          <CiHome className="w-5 h-5 font-bold text-white "/></Link>
         </div>
         <DashboardSidebar />
       </div>
@@ -70,12 +72,15 @@ export default function DashboardLayout() {
             Logout
           </button>
         </div>
-
+          
         {/* ✅ Scrollable Content */}
-        <div className="flex-1 bg-gray-50 overflow-auto p-4">
+        <div className="flex-1 hidden md:block h-full bg-gray-100 w-full overflow-auto px-4">
           <Outlet />
         </div>
       </div>
+        <div className="flex-1 block mt-10  md:hidden h-full bg-gray-100 w-full overflow-auto p-4">
+          <Outlet />
+        </div>
     </div>
   );
 }

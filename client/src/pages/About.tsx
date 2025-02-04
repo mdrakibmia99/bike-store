@@ -1,4 +1,6 @@
+import aboutImage from '@/assets/images/hero-image/slider2.jpg'
 export default function About() {
+
   return (
     <div className="bg-gray-100 py-12">
       <div className="container mx-auto px-4">
@@ -25,7 +27,7 @@ export default function About() {
           {/* Image Section */}
           <div className="flex justify-center items-center">
             <img
-              src="https://source.unsplash.com/600x400/?bicycle,shop"
+              src={aboutImage}
               alt="Bike Shop"
               className="rounded-lg shadow-lg w-full h-auto object-cover"
             />

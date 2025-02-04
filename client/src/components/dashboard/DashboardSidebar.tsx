@@ -9,6 +9,7 @@ import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
 import { TUser } from "@/types/types";
 import { Link, useLocation } from "react-router-dom";
+
 const adminMenuItems = [
     {
       name: "Dashboard",
@@ -35,6 +36,11 @@ const adminMenuItems = [
       name: "Users",
       path: "/admin/dashboard/customer",
       icon: <FaUsersCog className="w-7 h-7" />,
+    },
+    {
+      name: " Profile Settings",
+      path: "/admin/dashboard/profile-setting",
+      icon: <IoMdSettings className="w-7 h-7" />,
     },
     {
       name: " Profile Settings",
@@ -89,6 +95,8 @@ const DashboardSidebar = () => {
               {item?.icon}
               {item.name}
             </Link>
+
+            
           </li>
         ))}
       </ul>

@@ -58,12 +58,12 @@ export default function LoginPreview() {
 
       const user = verifyToken(res.data.token)
       dispatch(setUser({user:user,token:res?.data.token}))
-      toast.success('Logged in', { id: toastId, duration: 2000 });
+      toast.success('Logged in successful', { id: toastId, duration: 2000 });
       navigate(location?.state || '/', { replace: true })
 
 
   }catch{
-      toast.error('Something went wrong', { id: toastId, duration: 2000 });
+      toast.error('Email or password incorrect!', { id: toastId, duration: 2000 });
   }
   }
 if(token){

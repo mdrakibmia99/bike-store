@@ -83,7 +83,7 @@ export function AllUsers() {
         {(dataLength as number) > 0 && (
           <tbody>
             {filteredData?.map((item) => (
-              <tr className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
+              <tr key={item?._id} className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "

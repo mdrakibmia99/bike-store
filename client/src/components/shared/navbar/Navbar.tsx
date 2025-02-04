@@ -148,7 +148,7 @@ console.log(cartData,"cartData")
               <div className="mb-6 mt-6 flex flex-col gap-4">
                 <ul className="flex flex-col font-semibold gap-6">
                   {menuList.map((item) => (
-                    <li className="relative group" key={item.id}>
+                    <li className="relative group" key={item?.id}>
                       <Link to={item.link}>
                         <span
                           className={`cursor-pointer hover:text-primary-red transition-all duration-300 ${

@@ -17,11 +17,13 @@ const ProfileUpdate = () => {
   const [updateProfile] = useUpdateProfileMutation();
   const [updatePassword] = useUpdatePasswordMutation();
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
   const [profile, setProfile] = useState({
     name: "",
     email: "",
     phone: "",
+    address: "",
     profileImage: "",
   });
 
@@ -39,6 +41,7 @@ const ProfileUpdate = () => {
         name: user?.data?.name || "",
         email: user?.data?.email || "",
         phone: user?.data?.phone || "",
+        address: user?.data?.address || "",
         profileImage: user?.data?.profileImage || "",
       });
     }
@@ -54,10 +57,11 @@ const ProfileUpdate = () => {
 
   const handleImageChange = (file: File) => {
     setImage(file);
+    setImagePreview(URL.createObjectURL(file)); // Preview the selected image
   };
 
   const handleUpdateProfile = async () => {
-    if (!profile.name.trim() || !profile.phone.trim()) {
+    if (!profile.name.trim() || !profile.phone.trim() || !profile.address.trim()) {
       return toast.error("Fields cannot be empty!");
     }
     const toastId = toast.loading("Updating profile...");
@@ -96,8 +100,11 @@ const ProfileUpdate = () => {
       name: user?.data?.name || "",
       email: user?.data?.email || "",
       phone: user?.data?.phone || "",
+      address: user?.data?.address || "",
       profileImage: user?.data?.profileImage || "",
     });
+    setImage(null);
+    setImagePreview("");
     setIsEditingProfile(false);
   };
 
@@ -126,7 +133,7 @@ const ProfileUpdate = () => {
   if (isLoading) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
-console.log(user,"user")
+
   return (
     <div className="max-w-lg mx-auto p-6">
       {/* Profile Section */}
@@ -134,7 +141,7 @@ console.log(user,"user")
         <CardHeader className="flex items-center gap-4">
           <Avatar className="w-20 h-20">
             <AvatarImage
-              src={profile.profileImage || "https://via.placeholder.com/150"}
+              src={imagePreview || profile.profileImage || "https://via.placeholder.com/150"}
             />
             <AvatarFallback>{profile.name?.charAt(0) || "U"}</AvatarFallback>
           </Avatar>
@@ -163,6 +170,14 @@ console.log(user,"user")
             disabled={!isEditingProfile}
           />
 
+          <Label className="mt-2">Address</Label>
+          <Input
+            name="address"
+            value={profile.address}
+            onChange={handleInputChange}
+            disabled={!isEditingProfile}
+          />
+
           <Label className="mt-2">Profile Image</Label>
           <Input
             type="file"
@@ -175,6 +190,13 @@ console.log(user,"user")
             }}
             disabled={!isEditingProfile}
           />
+
+          {/* {imagePreview && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-500">Image Preview:</p>
+              <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+            </div>
+          )} */}
 
           {isEditingProfile ? (
             <div className="flex gap-4 mt-4">

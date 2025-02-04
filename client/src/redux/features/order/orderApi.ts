@@ -16,12 +16,19 @@ const orderApi = baseApi.injectEndpoints({
       },
       providesTags: ["order"],
     }),
-    specificProducts: builder.query({
-      query: (id) => ({
-        url: `/products/${id}`,
+    // specificProducts: builder.query({
+    //   query: (id) => ({
+    //     url: `/products/${id}`,
+    //     method: "GET",
+    //   }),
+      
+    // }),
+    revenue: builder.query({
+      query: () => ({
+        url: `/orders/revenue`,
         method: "GET",
       }),
-      
+      providesTags: ["revenue"],
     }),
     createOrder: builder.mutation({
       query: (data) => ({
@@ -30,7 +37,7 @@ const orderApi = baseApi.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ["product"],
+      invalidatesTags: ["product","revenue"],
     }),
     verifyOrder: builder.mutation({
         query: (data) => (console.log(data,"check"),
@@ -58,6 +65,7 @@ const orderApi = baseApi.injectEndpoints({
 export const {
 useCreateOrderMutation,
 useAllOrdersQuery,
-useVerifyOrderMutation
+useVerifyOrderMutation,
+useRevenueQuery
 
 } = orderApi;

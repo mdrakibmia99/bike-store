@@ -8,7 +8,7 @@ const orderRoutes = express.Router();
 
 orderRoutes.patch("/verify", auth(USER_ROLE.admin), orderController.verifyPayment);
 
-// orderRoutes.get('/revenue',auth(USER_ROLE.admin), orderController.getTotalRevenue);
+orderRoutes.get('/revenue',auth(USER_ROLE.admin), orderController.getTotalRevenue);
 
 orderRoutes.post(
   '/',

@@ -1,11 +1,14 @@
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
-import { useAllOrdersQuery, useVerifyOrderMutation } from "@/redux/features/order/orderApi";
+import {
+  useAllOrdersQuery,
+  useVerifyOrderMutation,
+} from "@/redux/features/order/orderApi";
 import { useState } from "react";
 
 const OrderAdmin = () => {
   const { data, isLoading } = useAllOrdersQuery(undefined);
-  const [verifyOrder]=useVerifyOrderMutation();
+  const [verifyOrder] = useVerifyOrderMutation();
 
   const [search, setSearch] = useState("");
 
@@ -14,6 +17,7 @@ const OrderAdmin = () => {
   );
   const dataLength = filteredData?.length;
   if (isLoading) return <Loading />;
+  console.log(data, "all order");
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className="flex justify-between items-center pr-1">
@@ -32,12 +36,15 @@ const OrderAdmin = () => {
               Id
             </th>
             <th scope="col" className="px-6 py-3">
-              total price
+              user Email
+            </th>
+            <th scope="col" className="px-6 py-3">
+              product Details
             </th>
             <th scope="col" className="px-6 py-3">
               Transaction Id
             </th>
- 
+
             <th scope="col" className="px-6 py-3">
               Status
             </th>
@@ -50,23 +57,35 @@ const OrderAdmin = () => {
         {(dataLength as number) > 0 && (
           <tbody>
             {filteredData?.map((item) => (
-              <tr className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
+              <tr key={item?._id} className="odd:bg-white  even:bg-gray-50 0 border-b  border-gray-200">
                 <td className="px-6 py-4">{item?._id}</td>
-                <td className="px-6 py-4"> {item?.totalPrice}</td>
+                <td className="px-6 py-4">{item?.user?.email}</td>
+                <td className="px-6 py-4">
+                  {item?.products.map((product,index) => (
+                    <div key={index} className="flex gap-2 justify-between">
+                      <p>{product?.product.name}</p>
+                      <p>| {product?.product?.brand}</p>
+                      <p>| {product?.product?.category}</p>
+                      <p className="text-red-500">
+                        | {product?.product?.quantity}
+                      </p>
+                    </div>
+                  ))}
+                </td>
                 <td className="px-6 py-4">{item?.transaction?.id}</td>
                 <td className="px-6 py-4">{item?.status}</td>
                 <td className="px-6 py-4">
-                    {
-                        item?.status.toLowerCase() === "pending" ?(
-                            <Button onClick={()=>verifyOrder({order_id:item.transaction.id})}>
-                                Verify Order
-                            </Button>
-                        ): <Button >
-                          Verified
-    
+                  {item?.status.toLowerCase() === "pending" ? (
+                    <Button
+                      onClick={() =>
+                        verifyOrder({ order_id: item.transaction.id })
+                      }
+                    >
+                      Verify Order
                     </Button>
-                    }
-
+                  ) : (
+                    <Button>Verified</Button>
+                  )}
                 </td>
               </tr>
             ))}

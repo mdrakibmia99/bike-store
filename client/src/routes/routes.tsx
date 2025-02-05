@@ -9,7 +9,6 @@ import Services from "@/pages/Services";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import ProductCreate from "@/pages/Dashboard/ProductCreate";
 import FAQPage from "@/pages/FAQPage";
 import CartPage from "@/pages/CartPage";
 import ProductDetails from "@/pages/ProductDetails";
@@ -120,11 +119,8 @@ export const router = createBrowserRouter([
     {
       path: "/user/dashboard/profile-setting",
       element: < ProfileUpdate/>,
-    },
-    {
-      path: "/user/dashboard/orders/all",
-      element: < ProductCreate/>,
     }
+   
   
   ]
   },

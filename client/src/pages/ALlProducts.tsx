@@ -172,7 +172,7 @@ export default function AllProducts() {
         )}
 
         {/* Pagination */}
-        <div className="flex justify-center my-8 gap-4">
+        <div className="flex justify-center py-8 gap-4">
           <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 disabled:bg-gray-600 transition-all duration-300">Prev</button>
           <span className="px-4 py-2 text-black">Page {currentPage} of {totalPages}</span>
           <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 disabled:bg-gray-600 transition-all duration-300">Next</button>

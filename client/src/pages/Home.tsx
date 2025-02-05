@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="bg-gray-100">
       <Banner />
-      <div className="container mx-auto my-16">
+      <div className="container mx-auto my-16 px-4 md:px-0">
         <h2 className=" text-center text-3xl md:text-5xl font-bold text-primary-black mb-16">
           Feature Product
         </h2>

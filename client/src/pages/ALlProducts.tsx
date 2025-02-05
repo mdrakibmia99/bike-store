@@ -57,7 +57,7 @@ export default function AllProducts() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 md:px-0">
         <h1 className="text-4xl font-bold py-4 text-primary-red text-center">All Products</h1>
 
         {/* Search and Filters */}

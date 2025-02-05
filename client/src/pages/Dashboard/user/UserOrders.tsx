@@ -1,7 +1,7 @@
 import Loading from "@/components/Loading";
 import { useAllOrdersQuery } from "@/redux/features/order/orderApi";
 import { useState } from "react";
-
+import { OrderProductDetails } from "../OrderProductDetails";
 
 const UserOrders = () => {
   const { data, isLoading } = useAllOrdersQuery(undefined);
@@ -34,15 +34,19 @@ const UserOrders = () => {
             <th scope="col" className="px-6 py-3">
               user Email
             </th>
-            <th scope="col" className="px-6 py-3">
-              product Details
-            </th>
+
             <th scope="col" className="px-6 py-3">
               Transaction Id
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Price
             </th>
 
             <th scope="col" className="px-6 py-3">
               Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Details
             </th>
           </tr>
         </thead>
@@ -55,20 +59,10 @@ const UserOrders = () => {
               >
                 <td className="px-6 py-4">{item?._id}</td>
                 <td className="px-6 py-4">{item?.user?.email}</td>
-                <td className="px-6 py-4">
-                  {item?.products.map((product, index) => (
-                    <div key={index} className="flex gap-2 justify-between">
-                      <p>{product?.product?.name}</p>
-                      <p>| {product?.product?.brand}</p>
-                      <p>| {product?.product?.category}</p>
-                      <p className="text-red-500">
-                        | {product?.product?.quantity}
-                      </p>
-                    </div>
-                  ))}
-                </td>
                 <td className="px-6 py-4">{item?.transaction?.id}</td>
+                <td className="px-6 py-4">{item?.totalPrice}</td>
                 <td className="px-6 py-4">{item?.status}</td>
+                <td className="px-6 py-4"><OrderProductDetails orderItems={item} /></td>
               </tr>
             ))}
           </tbody>

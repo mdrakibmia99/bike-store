@@ -61,18 +61,18 @@ export function OrderProductDetails({
                 <TableRow key={index}>
                   <TableCell>
                     <img
-                      src={item.product.image}
-                      alt={item.product.name}
+                      src={item?.product?.image}
+                      alt={item?.product?.name}
                       className="w-12 h-12 object-cover rounded"
                     />
                   </TableCell>
-                  <TableCell>{item.product.name}</TableCell>
-                  <TableCell>{item.product.brand}</TableCell>
-                  <TableCell>tk {item.product.price}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell> tk {item.quantity * item.product.price }</TableCell>
+                  <TableCell>{item?.product?.name}</TableCell>
+                  <TableCell>{item?.product?.brand}</TableCell>
+                  <TableCell>tk {item?.product?.price}</TableCell>
+                  <TableCell>{item?.quantity}</TableCell>
+                  <TableCell> tk {item?.quantity * item?.product?.price }</TableCell>
                   <TableCell>
-                    {item.product.inStock ? (
+                    {item?.product?.inStock ? (
                       <span className="text-green-500">Yes</span>
                     ) : (
                       <span className="text-red-500">No</span>

@@ -42,8 +42,8 @@ const getSpecificBike = catchAsync(async (req, res) => {
 const updateBike = catchAsync(async (req, res) => {
   const productId = req?.params?.productId;
   const body = req.body;
-  console.log(productId,body);
-  console.log(body, 'body');
+  // console.log(productId,body);
+  // console.log(body, 'body');
   const result = await bikeService.updateBike(productId, body);
   res.status(StatusCodes.OK).json({
     success: true,

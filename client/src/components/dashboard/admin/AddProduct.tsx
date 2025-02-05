@@ -92,7 +92,7 @@ const AddProduct = () => {
       );
            
       const result = await response.json();
-      console.log(result,response,"asdfdfff") // ✅ Parse the response correctly
+      // console.log(result,response,"asdfdfff") // ✅ Parse the response correctly
       const imageUrl = result.secure_url;
       const productData = {
         ...data,
@@ -100,7 +100,7 @@ const AddProduct = () => {
       };
       // image upload end
       const res = await addProduct(productData);
-      console.log(res, "trest");
+      // console.log(res, "trest");
       if (res?.data) {
         toast.success("Product added successfully!", { id: toastId });
         reset();

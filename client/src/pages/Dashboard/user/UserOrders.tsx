@@ -13,7 +13,7 @@ const UserOrders = () => {
   );
   const dataLength = filteredData?.length;
   if (isLoading) return <Loading />;
-  console.log(data, "all order");
+  // console.log(data, "all order");
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className="flex justify-between items-center pr-1">

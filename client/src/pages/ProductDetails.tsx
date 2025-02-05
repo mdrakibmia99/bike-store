@@ -50,7 +50,7 @@ const ProductDetails = () => {
   const navigate=useNavigate()
   const dispatch=useAppDispatch()
   const product = data?.data;
-console.log(data?.data,"checking product")
+// console.log(data?.data,"checking product")
  const handleOrder=()=>{
   dispatch(addToCart({...product,selectQuantity:1}))
   navigate('/cart')

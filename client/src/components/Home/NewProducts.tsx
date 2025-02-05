@@ -51,9 +51,9 @@ import LoadingSkelton from "../shared/LoadingSkelton";
 // ];
 
 const NewProducts = () => {
-  const { data, isLoading, isError } = useAllProductsQuery(undefined);
+  const { data, isLoading } = useAllProductsQuery(undefined);
   const dispatch = useAppDispatch();
-  console.log(isError, "all products");
+  // console.log(isError, "all products");
   if (isLoading) {
     return (
      <LoadingSkelton/>

@@ -5,7 +5,7 @@ import { adminService } from './admin.service';
 const blockUser = catchAsync(async (req, res) => {
   const userId = req.params.userId;
   const body=req.body;
-  console.log(body)
+  // console.log(body)
   // console.log(userId,"admin user id")
   const result= await adminService.blockUser(userId,body);
   res.status(StatusCodes.OK).json({

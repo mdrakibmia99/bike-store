@@ -69,7 +69,7 @@ const DashboardSidebar = () => {
     let menuItems;
     if (token) {
         isUser = verifyToken(token) as TUser;
-        console.log(isUser, "isUser");
+        // console.log(isUser, "isUser");
         if (isUser.role === "admin") {
           menuItems = adminMenuItems;
         } else {

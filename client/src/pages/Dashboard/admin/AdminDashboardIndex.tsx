@@ -13,7 +13,7 @@ const AdminDashboardIndex = () => {
      const { isLoading:userLoading, data:userData } = useAllUserQuery(undefined);
     const {isLoading:orderLoading,data:orderData}=useAllOrdersQuery(undefined)
     const {isLoading:revenueLoading,data:revenueData}=useRevenueQuery(undefined)
- console.log(revenueData,"revenue data")
+//  console.log(revenueData,"revenue data")
     return (
         <div className="p-6">
           <h1 className="text-2xl font-bold mb-4">Dashboard Overview</h1>

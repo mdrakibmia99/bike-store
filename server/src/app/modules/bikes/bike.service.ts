@@ -20,7 +20,7 @@ const getBikes = async (query: Record<string, unknown>) => {
 
     const result = await bikeQuery.modelQuery;
     const meta = await bikeQuery.countTotal();
-    console.log(result,meta,"test")
+    // console.log(result,meta,"test")
     return {
       meta,
       result,
@@ -35,7 +35,7 @@ const getSpecificBike = async (id: string) => {
 
 // create this service for update a bike
 const updateBike = async (id: string, data: Partial<IBike>) => {
-  console.log(data,"update data")
+  // console.log(data,"update data")
   const result = await Bike.findByIdAndUpdate(id, data, { new: true });
   return result;
 };

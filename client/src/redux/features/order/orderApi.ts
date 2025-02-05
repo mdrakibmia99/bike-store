@@ -1,5 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
-import {  IOrderResponse, TResponseRedux } from "@/types/types";
+import { IOrderResponse, TResponseRedux } from "@/types/types";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,7 +21,7 @@ const orderApi = baseApi.injectEndpoints({
     //     url: `/products/${id}`,
     //     method: "GET",
     //   }),
-      
+
     // }),
     revenue: builder.query({
       query: () => ({
@@ -37,17 +37,16 @@ const orderApi = baseApi.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ["order","product","revenue"],
+      invalidatesTags: ["order", "product", "revenue"],
     }),
     verifyOrder: builder.mutation({
-        query: (data) => (console.log(data,"check"),
-            {
-          url: `/orders/verify`,
-          method: "PATCH",
-          body: data,
-        }),
-        invalidatesTags: ["order","product"],
+      query: (data) => ({
+        url: `/orders/verify`,
+        method: "PATCH",
+        body: data,
       }),
+      invalidatesTags: ["order", "product"],
+    }),
 
     // updateProduct: builder.mutation({
     //   query: ({ data, id }) => ({
@@ -58,14 +57,12 @@ const orderApi = baseApi.injectEndpoints({
 
     //   invalidatesTags: ["product"],
     // }),
-
   }),
 });
 
 export const {
-useCreateOrderMutation,
-useAllOrdersQuery,
-useVerifyOrderMutation,
-useRevenueQuery
-
+  useCreateOrderMutation,
+  useAllOrdersQuery,
+  useVerifyOrderMutation,
+  useRevenueQuery,
 } = orderApi;

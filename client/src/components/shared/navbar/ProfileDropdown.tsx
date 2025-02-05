@@ -22,7 +22,7 @@ export function ProfileDropdown({ user }: { user: TUser }) {
     toast.success("logout!");
     await logOut({});
   };
-  console.log(data,"update")
+  // console.log(data,"update")
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

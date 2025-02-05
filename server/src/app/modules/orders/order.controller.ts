@@ -9,7 +9,7 @@ const createOrder = catchAsync(async (req, res) => {
   const user=req?.user as TTokenResponse;
   const payload = req.body;
   const result = await orderService.createOrder(user, payload, req.ip!);
-  console.log(result,"result")
+  // console.log(result,"result")
   res.status(StatusCodes.OK).json({
     success: true,
     message: 'Order create successfully',

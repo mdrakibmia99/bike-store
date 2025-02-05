@@ -32,7 +32,7 @@ const Navbar = () => {
   const cartData = useAppSelector((state) => state.cart);
   const location = useLocation();
 
-console.log(cartData,"cartData")
+// console.log(cartData,"cartData")
   const isUser = token ? verifyToken(token) : null;
   const CartIcon = (
     <Link

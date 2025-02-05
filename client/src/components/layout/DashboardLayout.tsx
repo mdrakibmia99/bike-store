@@ -21,7 +21,7 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className=" md:flex h-screen w-full  overflow-hidden">
+    <div className=" md:flex h-screen w-full  overflow-auto">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 bg-gray-800 text-white transition-all duration-300 overflow-y-auto 

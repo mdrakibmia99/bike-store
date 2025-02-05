@@ -10,7 +10,7 @@ const blockUser = async (
   ) => {
     // check blog id from database
     const checkUser = await User.findById(userId);
-    console.log(checkUser)
+    // console.log(checkUser)
     // if blog id not fount it show a error
     if (checkUser?.role === 'admin') {
       throw new AppError(StatusCodes.NOT_FOUND, 'Admin not will be blocked');

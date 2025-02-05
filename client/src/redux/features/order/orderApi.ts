@@ -46,7 +46,7 @@ const orderApi = baseApi.injectEndpoints({
           method: "PATCH",
           body: data,
         }),
-        invalidatesTags: ["order"],
+        invalidatesTags: ["order","product"],
       }),
 
     // updateProduct: builder.mutation({

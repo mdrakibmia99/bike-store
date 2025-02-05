@@ -41,6 +41,7 @@ const productApi = baseApi.injectEndpoints({
         url: `/products/${id}`,
         method: "GET",
       }),
+      providesTags: ["product"],
     }),
 
     createProduct: builder.mutation({

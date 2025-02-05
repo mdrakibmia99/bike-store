@@ -50,7 +50,7 @@ const Navbar = () => {
 
   return (
     <section className="py-4 bg-black sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center px-4 lg:px-8">
+      <div className="container mx-auto flex justify-between items-center px-4 lg:px-0">
         {/* Left Side - Logo */}
         <div className="flex items-center">
           <Link to={"/"}>

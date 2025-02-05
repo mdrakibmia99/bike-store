@@ -46,13 +46,18 @@ export interface IBikeResponse {
   createdAt?: Date;
   updatedAt?: Date;
 }
-type TProductDetails={
+export type TProductDetails={
   name: string;
   brand: string;
   category: string;
   price: number;
   quantity: string;
   inStock: string;
+  image: string;
+  model: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export interface IOrderResponse {
   transaction: { id: string; transactionStatus: string };
